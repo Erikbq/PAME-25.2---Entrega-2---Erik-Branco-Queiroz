@@ -160,4 +160,15 @@ export class Sistema{
         }
         return lista_multas;
     }
+
+    alterar_status_multa(id_multa, novo_status){
+        for(const multa of this.#colecao_multas){
+            if(multa.id_multa == id_multa){
+                multa.novo_status(novo_status);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
