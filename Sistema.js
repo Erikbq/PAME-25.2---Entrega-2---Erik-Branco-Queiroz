@@ -122,7 +122,7 @@ export class Sistema {
 
   // -----------------------  Agente de trânsito (logado)  ---------------------------------
 
-  ver_meus_dados() {
+  ver_dados_agente() {
     const agente = this.#agentes.get(this.#email_atual);
     const dados_agente = [
       agente.id_agente,
@@ -169,7 +169,7 @@ export class Sistema {
   ver_multas() {
     let lista_multas = [];
     for (const multa of this.#colecao_multas.values()) {
-      lista_multas.push([multa.id_multa, multa.id_cliente, multa.tipo_infracao, multa.valor, multa.status]);
+      lista_multas.push([multa.id_multa, multa.id_cliente, multa.tipo_infracao, multa.valor, multa.data, multa.status]);
     }
     return lista_multas;
   }
@@ -181,4 +181,51 @@ export class Sistema {
     }
     return false;
   }
+// -------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------  Condutor (logado)  ----------------------------------------------
+ver_dados_condutor() {
+    const condutor = this.#condutores.get(this.#email_atual);
+    const dados_condutor = [
+      condutor.id_condutor,
+      condutor.nome,
+      condutor.cpf,
+      condutor.data_nascimento,
+      condutor.email,
+    ];
+    return dados_condutor;
+  }
+
+ver_multas_condutor() {
+    let lista_multas = [];
+    for (const multa of this.#colecao_multas.values()) {
+        if(multa.id_cliente === this.#condutores.get(this.#email_atual).id_condutor){
+            lista_multas.push([multa.id_multa, multa.tipo_infracao, multa.valor, multa.data, multa.status]);
+        }
+    }
+    return lista_multas;
+}
+
+cadastrar_veiculo(placa, modelo, marca, cor) {
+    const novo_veiculo = new Veiculo(placa, modelo, marca, cor);
+    this.#colecao_carros.push(novo_veiculo);
+    return true;
+}
+
+pagar_multa(id_multa){
+    if(this.#colecao_multas.has(id_multa)){
+        this.#colecao_multas.get(id_multa).novo_status(1);
+        return this.#colecao_multas.get(id_multa).valor;
+    }
+    return false;
+}
+
+recorrer_multa(id_multa){
+    if(this.#colecao_multas.has(id_multa)){
+        this.#colecao_multas.get(id_multa).novo_status(3);
+        return true;
+    }
+    return false;
+}
+// --------------------------------------------------------------------------------------
 }
