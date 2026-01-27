@@ -9,15 +9,14 @@ export class Multa {
     #tipo_infracao;
     #valor;
     #data;
-    #status;
+    #status = 0; // 0 = pendente; 1 = paga; 2 = cancelada; 3 = recorrida
 
     // Construtor da classe multa. 
-    constructor(id_cliente, tipo_infracao, valor, data, status) {
+    constructor(id_cliente, tipo_infracao, valor, data) {
         this.#id_cliente = id_cliente;
         this.#tipo_infracao = tipo_infracao;
         this.#valor = valor;
         this.#data = data;
-        this.#status = status;
 
         // Gera um ID único composto de 8 números para a multa.
         this.#id_multa = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
@@ -47,4 +46,10 @@ export class Multa {
     get status() {
         return this.#status;
     }   
+
+    // set para mudar o status da multa.
+    set status(novo_status) {
+        this.#status = novo_status;
+    }
+
 }
