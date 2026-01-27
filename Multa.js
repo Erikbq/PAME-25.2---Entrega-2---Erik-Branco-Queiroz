@@ -51,5 +51,4 @@ export class Multa {
     set novo_status(novo_status) {
         this.#status = novo_status;
     }
-
 }
