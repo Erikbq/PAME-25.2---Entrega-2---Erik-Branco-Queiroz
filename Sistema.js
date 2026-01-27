@@ -64,7 +64,7 @@ export class Sistema {
   // ----------------  Funções para usuário não logado  --------------------------------
 
   // Fazer login
-  fazer_loging(email, senha) {
+  fazer_login(email, senha) {
     if (this.#verifica_email_agentes(email)) {
       if (this.#agentes.get(email).validarSenha(senha)) {
         this.#usuario_logado = 1;
@@ -160,8 +160,8 @@ export class Sistema {
     return lista_condutores;
   }
 
-  aplicar_multa(id_cliente, tipo_infracao, valor, data, status) {
-    const multa = new Multa(id_cliente, tipo_infracao, valor, data, status);
+  aplicar_multa(id_cliente, tipo_infracao, valor, data) {
+    const multa = new Multa(id_cliente, tipo_infracao, valor, data);
     this.#colecao_multas.set(multa.id_multa, multa);
     return true;
   }
@@ -176,7 +176,7 @@ export class Sistema {
 
   alterar_status_multa(id_multa, novo_status) {
     if(this.#colecao_multas.has(id_multa)){
-        this.#colecao_multas.get(id_multa).novo_status(novo_status);
+        this.#colecao_multas.get(id_multa).atualiza_status(novo_status);
         return true;
     }
     return false;
@@ -214,7 +214,7 @@ cadastrar_veiculo(placa, modelo, marca, cor) {
 
 pagar_multa(id_multa){
     if(this.#colecao_multas.has(id_multa)){
-        this.#colecao_multas.get(id_multa).novo_status(1);
+        this.#colecao_multas.get(id_multa).atualiza_status(1);
         return this.#colecao_multas.get(id_multa).valor;
     }
     return false;
@@ -222,7 +222,7 @@ pagar_multa(id_multa){
 
 recorrer_multa(id_multa){
     if(this.#colecao_multas.has(id_multa)){
-        this.#colecao_multas.get(id_multa).novo_status(3);
+        this.#colecao_multas.get(id_multa).atualiza_status(3);
         return true;
     }
     return false;
