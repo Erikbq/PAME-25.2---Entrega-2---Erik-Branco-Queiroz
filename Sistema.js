@@ -11,21 +11,153 @@ import { Multa } from './Multa.js';
 export class Sistema{
     
     // Atributos privados da classe Sistema. Serão arrays que servirão como banco de dados.
-    #veiculos;
     #condutores;
     #agentes;
-    #multas
-    #status_login;
+    #colecao_carros;
+    #colecao_multas;
+    #usuario_logado; // 0 = não está logado; 1 = agente; 2 = condutor
+    #email_atual;
+
 
     // Construtor da classe Sistema. Cria os arrays vazios.
     constructor(){
-        this.#veiculos = [];
-        this.#condutores = [];
-        this.#agentes = [];
-        this.#multas = [];
-        this.#status_login = 0;
+       
+        this.#condutores = new Map();
+        this.#agentes = new Map();
+        this.#colecao_carros = [];
+        this.#colecao_multas = [];
+        this.#usuario_logado = 0;
+        this.#email_atual = null;
+
     }
 
-    
+    // ---------------------  Funções auxiliares  --------------------------------
+    #verifica_email_condutores(email){
+        if(this.#condutores.has(email)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    #verifica_email_agentes(email){
+        if(this.#agentes.has(email)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    #verifica_email_geral(email){
+        if(this.#verifica_email_condutores(email) || this.#verifica_email_agentes(email)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    get usuario_logado(){
+        return this.#usuario_logado;
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    // ----------------  Funções para usuário não logado  --------------------------------
+
+    // Fazer login
+    fazer_loging(email, senha){
+        if(this.#verifica_email_agentes(email)){
+            if(this.#agentes.get(email).validarSenha(senha)){
+                this.#usuario_logado = 1;
+                this.#email_atual = email;
+                return true;
+            }
+        }
+        else if(this.#verifica_email_condutores(email)){
+            if(this.#condutores.get(email).validarSenha(senha)){
+                this.#usuario_logado = 2;
+                this.#email_atual = email;
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    // Fazer cadastro 
+    cadastro_condutor(nome, cpf, data_nascimento, email, senha){
+        if(!this.#verifica_email_geral(email)){
+            const novo_condutor = new Condutor(nome, cpf, data_nascimento, email, senha);
+            this.#condutores.set(email, novo_condutor);
+            this.#usuario_logado = 2;
+            this.#email_atual = email;
+            return true;
+        }
+        else{
+            return false;
+        } 
+    }
+
+    cadastro_agente(nome, cpf, email, senha){
+        if(!this.#verifica_email_geral(email)){
+            const novo_agente = new Agente(nome, cpf, email, senha);
+            this.#agentes.set(email, novo_agente);
+            this.#usuario_logado = 1;
+            this.#email_atual = email;
+            return true;
+        }
+        else{
+            return false;
+        
+        }
+    }
+
+    // Sair do sistema 
+
+    sair_sistema(){
+        this.#usuario_logado = 0;
+    }
+    // ---------------------------------------------------------------------------------------
+
+    // -----------------------  Agente de trânsito (logado)  ---------------------------------
+
+    ver_meus_dados(){
+        const agente = this.#agentes.get(this.#email_atual);
+        const dados_agente = [agente.id_agente, agente.nome, agente.cpf, agente.email, agente.numero_matricula];
+        return dados_agente;
+    }
+
+    ver_lista_veiculos(){
+        let lista_carros = [];
+        for(const veiculo of this.#colecao_carros){
+            lista_carros.push([veiculo.placa, veiculo.modelo, veiculo.marca, veiculo.cor]);
+        }
+        return lista_carros;
+    }
+
+    ver_lista_condutores(){
+        let lista_condutores = [];
+        for(const condutor of this.#condutores.values()){
+            lista_condutores.push([condutor.id_condutor, condutor.nome, condutor.cpf, condutor.data_nascimento]);
+        }
+        return lista_condutores;
+    }
+
+    aplicar_multa(id_cliente, tipo_infracao, valor, data, status){
+        const multa = new Multa(id_cliente, tipo_infracao, valor, data, status);
+        this.#colecao_multas.push(multa);
+        return true;
+    }
+
+    ver_multas(){
+        let lista_multas = [];
+        for(const multa of this.#colecao_multas){
+            lista_multas.push([multa.id_multa, multa.id_cliente, multa.tipo_infracao, multa.valor, multa.status]);
+        }
+        return lista_multas;
+    }
 }
