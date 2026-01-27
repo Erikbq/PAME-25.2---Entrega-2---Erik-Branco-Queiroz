@@ -48,7 +48,7 @@ export class Multa {
     }   
 
     // set para mudar o status da multa.
-    set status(novo_status) {
+    set novo_statusstatus(novo_status) {
         this.#status = novo_status;
     }
 
