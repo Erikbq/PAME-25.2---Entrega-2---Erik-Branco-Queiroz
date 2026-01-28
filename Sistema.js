@@ -162,7 +162,6 @@ export class Sistema {
   aplicar_multa(id_cliente, tipo_infracao, valor, data) {
     const multa = new Multa(id_cliente, tipo_infracao, valor, data);
     this.#colecao_multas.set(multa.id_multa, multa);
-    return true;
   }
 
   ver_multas() {
@@ -213,7 +212,7 @@ cadastrar_veiculo(placa, modelo, marca, cor) {
 
 pagar_multa(id_multa){
     if(this.#colecao_multas.has(id_multa)){
-        this.#colecao_multas.get(id_multa).atualiza_status(1);
+        this.#colecao_multas.get(id_multa).atualiza_status("Paga");
         return this.#colecao_multas.get(id_multa).valor;
     }
     return false;
@@ -221,7 +220,7 @@ pagar_multa(id_multa){
 
 recorrer_multa(id_multa){
     if(this.#colecao_multas.has(id_multa)){
-        this.#colecao_multas.get(id_multa).atualiza_status(3);
+        this.#colecao_multas.get(id_multa).atualiza_status("Recorrida");
         return true;
     }
     return false;
