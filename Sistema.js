@@ -226,4 +226,10 @@ recorrer_multa(id_multa){
     return false;
 }
 // --------------------------------------------------------------------------------------
+
+deslogar(){
+  this.#usuario_logado = 0;
+  this.#email_atual = null;
+}
+
 }
