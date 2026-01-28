@@ -66,7 +66,8 @@ export function solicitar_senha() {
   while (true) {
     // Pede a senha, mas não a mostra enquanto digita
     const senha = readlineSync.question("Digite a sua senha: ", {
-      hideEchoBack: true,
+      hideEchoBack: false,
+      mask: "*"
     });
 
     if (verificar_senha(senha)) {
@@ -130,7 +131,7 @@ export function solicitar_cpf() {
     const cpf_limpo = cpf.replace(/\D/g, "");
 
     try {
-      if (cpf_limpo.length < 11) {
+      if (!(cpf_limpo.length === 11)) {
         throw new Error("CPF inválido");
       }
     } catch (error) {
@@ -158,7 +159,7 @@ export function solicitar_data() {
     const data_limpa = data_nascimento.replace(/\D/g, "");
 
     try {
-      if (data_limpa.length < 8) {
+      if (!(data_limpa.length === 8)) {
         throw new Error("Data de nascimento inválida");
       }
     } catch (error) {
@@ -313,4 +314,26 @@ export function solicitar_status_multa() {
     break;
   }
   return status_multa;
+}
+
+export function solicitar_placa(){
+  let placa_correta;
+  while (true) {
+    const placa = readlineSync.question("Qual é a placa do veículo? ");
+
+    try {
+      if (!placa) {
+        throw new Error("Digite algo no campo\n");
+      }
+      if (!(placa.length === 7)) {
+        throw new Error("Placa inválida");
+      }
+      placa_correta = placa;
+      break;
+    } catch (error) {
+      console.log(error.message);
+      continue;
+    }
+  }
+  return placa_correta;
 }

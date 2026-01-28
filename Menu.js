@@ -16,6 +16,8 @@ import { solicitar_tipo_infracao } from "./Solicitacoes.js";
 import { solicitar_valor } from "./Solicitacoes.js";
 import { formata_valor } from "./Solicitacoes.js";
 import { solicitar_id_multa } from "./Solicitacoes.js";
+import { solicitar_status_multa } from "./Solicitacoes.js";
+import { solicitar_placa } from "./Solicitacoes.js";
 
 
 
@@ -233,7 +235,7 @@ function menu_agente(){
                 console.log("Extraindo informações...");
                 console.log("ID do Agente: " + dados_agente[0] + "\n");
                 console.log("Nome do Agente: " + dados_agente[1] + "\n");
-                console.log("CPF do Agente: " + dados_agente[2] + "\n");
+                console.log("CPF do Agente: " + formata_cpf(dados_agente[2]) + "\n");
                 console.log("Email do Agente: " + dados_agente[3] + "\n");
                 console.log("Número de Matrícula do Agente: " + dados_agente[4] + "\n");
                 break;
@@ -284,10 +286,10 @@ function menu_agente(){
                     console.log("-------------------------------------------\n");
                     console.log("ID da multa: " + multa[0] + "\n");
                     console.log("ID do condutor: " + multa[1] + "\n");
-                    console.log("Tipo de infração: " + multa[3] + "\n");
-                    console.log("Valor da multa: " + formata_valor(multa[4]) + "\n",);
-                    console.log("Data de ocorrência: " + formata_data(multa[5]) + "\n");
-                    console.log("Status da multa: " + multa[6] + "\n");
+                    console.log("Tipo de infração: " + multa[2] + "\n");
+                    console.log("Valor da multa: " + formata_valor(multa[3]) + "\n",);
+                    console.log("Data de ocorrência: " + formata_data(multa[4]) + "\n");
+                    console.log("Status da multa: " + multa[5] + "\n");
                     console.log("-------------------------------------------\n");
                 }
                 break;
@@ -385,10 +387,10 @@ function menu_condutor(){
           console.log(
             "----------  Opção escolhida: Cadastrar Veículo ----------\n",
           );
-          const placa = solicitar_id_cliente();
-          const modelo = readlineSync.question();
-          const marca = readlineSync.question();
-          const cor = readlineSync.question();
+          const placa = solicitar_placa();
+          const modelo = readlineSync.question("Qual é o modelo do veículo? ");
+          const marca = readlineSync.question("Qual é a marca do veículo? ");
+          const cor = readlineSync.question("Qual é a cor do veículo? ");
           sistema.cadastrar_veiculo(placa, modelo, marca, cor);
           console.log("Carro cadastrado com sucesso!\n");
           break;
@@ -397,7 +399,7 @@ function menu_condutor(){
           console.log(
             "----------  Opção escolhida: Pagar Multa  ----------\n",
           );
-          const id_multa_pagar = solicitar_id_cliente();
+          const id_multa_pagar = solicitar_id_multa();
           if(sistema.pagar_multa(id_multa_pagar)){
             console.log("Multa paga com sucesso!\n");
           }
@@ -410,7 +412,7 @@ function menu_condutor(){
           console.log(
             "----------  Opção escolhida: Recorrer Multa ----------\n",
           );
-          const id_multa_recorrer = solicitar_id_cliente();
+          const id_multa_recorrer = solicitar_id_multa();
           if(sistema.recorrer_multa(id_multa_recorrer)){
             console.log("Multa recorrida com sucesso!\n");
           }
