@@ -9,7 +9,7 @@ export class Multa {
     #tipo_infracao;
     #valor;
     #data;
-    #status = 0; // 0 = pendente; 1 = paga; 2 = cancelada; 3 = recorrida
+    #status = "Pendente"; // 0 = pendente; 1 = paga; 2 = cancelada; 3 = recorrida
 
     // Construtor da classe multa. 
     constructor(id_cliente, tipo_infracao, valor, data) {
