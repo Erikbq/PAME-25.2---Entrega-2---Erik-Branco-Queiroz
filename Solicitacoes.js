@@ -165,3 +165,11 @@ export function solicitar_data(){
     return data_correta;
 
 }
+
+export function formata_cpf(cpf){
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
+export function formata_data(data){
+    return data.replace(/(\d{2})(\d{2})(\d{4})/, "$1/$2/$3");
+}
