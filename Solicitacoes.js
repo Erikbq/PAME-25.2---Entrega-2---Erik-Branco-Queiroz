@@ -254,3 +254,63 @@ export function solicitar_valor() {
     }
     return valor_final;
 }
+
+export function formata_valor(valor){
+    return (valor + " R$");
+}
+
+export function solicitar_id_multa(){
+  let id_multa_correto;
+  while (true) {
+    const id_multa = readlineSync.question("Qual é o ID da multa? ");
+
+    try {
+      if (!id_multa) {
+        throw new Error("Digite algo no campo\n");
+      }
+      const id_limpo = id_multa.replace(/\D/g, "");
+      if (!id_limpo) {
+        throw new Error("ID inválido");
+      }
+      id_multa_correto = id_limpo;
+      break;
+    } catch (error) {
+      console.log(error.message);
+      continue;
+    }
+  }
+  return id_multa_correto;
+}
+
+export function solicitar_status_multa() {
+  let status_multa;
+  while (true) {
+    console.log("Escolha qual será o novo status da multa: \n");
+    console.log("1- Pendente\n");
+    console.log("2- Paga\n");
+    console.log("3- Cancelada\n");
+    console.log("4- Recorrida\n");
+
+    const status = readlineSync.questionInt();
+
+    switch (status) {
+      case 1:
+        status_multa = "Pendente";
+        break;
+      case 2:
+        status_multa = "Paga";
+        break;
+      case 3:
+        status_multa = "Cancelada";
+        break;
+      case 4:
+        status_multa = "Recorrida";
+        break;
+      default:
+        console.log("Opção inválida. Tente novamente\n");
+        continue;
+    }
+    break;
+  }
+  return status_multa;
+}
