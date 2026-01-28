@@ -45,8 +45,6 @@ function main(){
         }
 }
 
-main();
-
 // Função menu usuário
 function menu_usuario(){
 
@@ -328,4 +326,111 @@ function menu_agente(){
 }
 
 // Função menu condutor
-function menu_condutor(){}
+function menu_condutor(){
+
+    let deslogar = false;
+
+    do {
+      console.log(
+        "----------------------------------- Menu Condutor -----------------------------------\n",
+      );
+      console.log("SEJA MUITO BEM VINDO!\n");
+      console.log(
+        "Escolha uma das seguintes opções e digite o número referente a ela:\n",
+      );
+      console.log("1- Ver Meus Dados\n");
+      console.log("2- Ver Minhas Multas\n");
+      console.log("3- Cadastrar Veículo\n");
+      console.log("4- Pagar Multa\n");
+      console.log("5- Recorrer Multa\n");
+      console.log("6- Deslogar\n");
+      console.log(
+        "----------------------------------------------------------------------------------------\n",
+      );
+
+      const opcao = readlineSync.questionInt();
+
+      switch (opcao) {
+        case 1:
+          console.log(
+            "----------  Opção escolhida: Ver Meus Dados  ----------\n",
+          );
+          const dados_condutor = sistema.ver_dados_condutor();
+          console.log("Extraindo informações...");
+          console.log("ID do Condutor: " + dados_condutor[0] + "\n");
+          console.log("Nome do Condutor: " + dados_condutor[1] + "\n");
+          console.log("CPF do Condutor: " + formata_cpf(dados_condutor[2]) + "\n");
+          console.log("Data de Nascimento do Condutor: " + formata_data(dados_condutor[3]) + "\n");
+          console.log("Email do Condutor: " + dados_condutor[4] + "\n");
+          break;
+
+        case 2:
+          console.log(
+            "----------  Opção escolhida: Ver Minhas Multas ----------\n",
+          );
+          const lista_minhas_multas = sistema.ver_multas_condutor();
+          console.log("Extraindo informações...");
+          for (const multa of lista_minhas_multas) {
+            console.log("-------------------------------------------\n");
+            console.log("ID da multa: " + multa[0] + "\n");
+            console.log("Tipo de infração: " + multa[1] + "\n");
+            console.log("Valor da multa: " + multa[2] + "\n");
+            console.log("Data de ocorrência: " + multa[3] + "\n");
+            console.log("Status da multa: " + multa[4] + "\n");
+            console.log("-------------------------------------------\n");
+          }
+          break;
+
+        case 3:
+          console.log(
+            "----------  Opção escolhida: Cadastrar Veículo ----------\n",
+          );
+          const placa = solicitar_id_cliente();
+          const modelo = readlineSync.question();
+          const marca = readlineSync.question();
+          const cor = readlineSync.question();
+          sistema.cadastrar_veiculo(placa, modelo, marca, cor);
+          console.log("Carro cadastrado com sucesso!\n");
+          break;
+
+        case 4:
+          console.log(
+            "----------  Opção escolhida: Pagar Multa  ----------\n",
+          );
+          const id_multa_pagar = solicitar_id_cliente();
+          if(sistema.pagar_multa(id_multa_pagar)){
+            console.log("Multa paga com sucesso!\n");
+          }
+          else{
+            console.log("Erro ao pagar multa. ID não encontrado.\n");
+          };
+          break;
+
+        case 5:
+          console.log(
+            "----------  Opção escolhida: Recorrer Multa ----------\n",
+          );
+          const id_multa_recorrer = solicitar_id_cliente();
+          if(sistema.recorrer_multa(id_multa_recorrer)){
+            console.log("Multa recorrida com sucesso!\n");
+          }
+          else{
+            console.log("Erro ao recorrer à multa. ID não encontrado.\n");
+          };
+          break;
+
+        case 6:
+          console.log("----------  Opção escolhida: Deslogar  ----------\n");
+          console.log("Deslogando...\n");
+          sistema.deslogar();
+          deslogar = true;
+          break;
+
+        default:
+          console.log("Opção inválida. Tente novamente\n");
+          break;
+      }
+    } while (!deslogar);
+}
+
+main();

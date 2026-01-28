@@ -213,7 +213,7 @@ cadastrar_veiculo(placa, modelo, marca, cor) {
 pagar_multa(id_multa){
     if(this.#colecao_multas.has(id_multa)){
         this.#colecao_multas.get(id_multa).atualiza_status("Paga");
-        return this.#colecao_multas.get(id_multa).valor;
+        return true;
     }
     return false;
 }
