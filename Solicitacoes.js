@@ -8,7 +8,7 @@ function verificar_email(email){
         return false;
     }
     // Verifica se contém @
-    else if(!email,includes("@")){
+    else if(!email.includes("@")){
         return false;
     }
     else{
@@ -24,7 +24,7 @@ function transforma_email(email){
 }
 
 // Função para solicitar email
-function solicitar_email(){
+export function solicitar_email(){
     let email_correto;
     while(true){
         const email = readlineSync.question("Digite o seu email: ");
@@ -37,6 +37,7 @@ function solicitar_email(){
             continue;
         }
     }
+    return email_correto;
 }
 
 
@@ -59,7 +60,7 @@ function verificar_senha(senha){
     }
 }
 
-function solicitar_senha(){
+export function solicitar_senha(){
     let senha_correta;
     while(true){
         // Pede a senha, mas não a mostra enquanto digita
@@ -74,9 +75,10 @@ function solicitar_senha(){
             continue;
         }
     }
+    return senha_correta;
 }
 
-function solicitar_nome(){
+export function solicitar_nome(){
     let nome_correto;
     while (true) {
       const nome = readlineSync.question("Qual é o seu nome? ");
@@ -87,7 +89,7 @@ function solicitar_nome(){
       }
 
       // 1. Remove tudo que NÃO é letra e nem espaço
-      const apenasLetras = nomeSujo.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
+      const apenasLetras = nome.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
 
       if (!apenasLetras){
         console.log("Nome inválido. Tente novamente\n");
@@ -102,10 +104,14 @@ function solicitar_nome(){
 
         // Pega a 1ª letra maiúscula + o resto da palavra. Utiliza map para iterar finções sobre o array palavras.
       const palavrasFormatadas = palavras.map((palavra) => {return palavra.charAt(0).toUpperCase() + palavra.slice(1);});
+
+      nome_correto = palavrasFormatadas.join(" ");
+      break;
     }
+    return nome_correto;
 }
 
-function solicitar_cpf(){
+export function solicitar_cpf(){
     let cpf_correto;
     while(true){
         const cpf = readlineSync.question("Qual é o seu CPF? ");
@@ -129,9 +135,10 @@ function solicitar_cpf(){
         cpf_correto = cpf_limpo;
         break;
     }
+    return cpf_correto;
 }
 
-function solicitar_data(){
+export function solicitar_data(){
     let data_correta;
     while(true){
         const data_nascimento = readlineSync.question("Qual é a sua data de nascimento (dd/mm/aaaa)? ");
@@ -144,7 +151,7 @@ function solicitar_data(){
         const data_limpa = data_nascimento.replace(/\D/g, '');
     
         try{
-            if(cpf_limpo.length < 8){
+            if(data_limpa.length < 8){
                 throw new Error("Data de nascimento inválida");
             }
         }
@@ -155,4 +162,6 @@ function solicitar_data(){
         data_correta = data_limpa;
         break;
     }
+    return data_correta;
+
 }
