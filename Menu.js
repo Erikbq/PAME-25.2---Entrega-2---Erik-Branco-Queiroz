@@ -23,7 +23,7 @@ function main(){
     let tipo_usuario = 0;
 
     do{
-        console.log("----------------------------------- Menu de Cadastro -----------------------------------\n",);
+        console.log("----------------------------------- Menu Usuário -----------------------------------\n",);
         console.log("SEJA MUITO BEM VINDO!\n");
         console.log("Escolha uma das seguintes opções e digite o número referente à ela:\n");
         console.log("1- Fazer Login\n");
@@ -47,6 +47,7 @@ function main(){
                 
                 if(retorno === true){
                     console.log("Login realizado com sucesso!\n");
+                    tipo_usuario = sistema.usuario_logado;
                 }
                 else{
                     console.log("Email ou senha incorretos ou não cadastrados.\n");
@@ -85,11 +86,12 @@ function main(){
                         const retorno_condutor = sistema.cadastro_condutor(nome_condutor, cpf_condutor, data_nascimento_condutor, email_condutor, senha_condutor);
 
                         if(retorno_condutor === true){
-                            console.log("Login realizado com sucesso!\n");
+                            console.log("Cadastro realizado com sucesso!\n");
+                            tipo_usuario = sistema.usuario_logado;
                         }
                         else{
-                            console.log("Email ou senha incorretos ou não cadastrados.\n");
-                            console.log("Se não tiver uma conta cadastrada escolha a opção 2 para se cadastrar\n");
+                            console.log("Email ou senha incorretos ou usuário já cadastrado.\n");
+                            console.log("Se já tiver uma conta cadastrada escolha a opção 1 para se logar\n");
                         }
                         break;
         
@@ -111,11 +113,12 @@ function main(){
                         const retorno_agente = sistema.cadastro_agente(nome_agente, cpf_agente, email_agente, senha_agente);
 
                         if(retorno_agente === true){
-                            console.log("Login realizado com sucesso!\n");
+                            console.log("Cadastro realizado com sucesso!\n");
+                            tipo_usuario = sistema.usuario_logado;
                         }
                         else{
-                            console.log("Email ou senha incorretos ou não cadastrados.\n");
-                            console.log("Se não tiver uma conta cadastrada escolha a opção 2 para se cadastrar\n");
+                            console.log("Email ou senha incorretos ou usuário já cadastrado.\n");
+                            console.log("Se já tiver uma conta cadastrada escolha a opção 1 para se logar\n",);
                         }
                         break;
 
@@ -123,6 +126,17 @@ function main(){
                         console.log("Opção inválida. Tente novamente\n");
                         break;
                 }
+                break;
+
+            case 3:
+                console.log("----------  Opção escolhida: Sair  ----------\n");
+                console.log("Encerrando o sistema...\n");
+                sair = true;
+                break;
+
+            default:
+                console.log("Opção inválida. Tente novamente\n");
+                break;
             }
     } while(!sair);
 }
