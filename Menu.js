@@ -51,7 +51,6 @@ main();
 function menu_usuario(){
 
     let sair = false;
-    let tipo_usuario = 0;
 
     do {
       console.log(
@@ -84,7 +83,7 @@ function menu_usuario(){
 
           if (retorno === true) {
             console.log("Login realizado com sucesso!\n");
-            tipo_usuario = sistema.usuario_logado;
+            sair = true;
           } else {
             console.log("Email ou senha incorretos ou não cadastrados.\n");
             console.log(
@@ -135,7 +134,7 @@ function menu_usuario(){
 
               if (retorno_condutor === true) {
                 console.log("Cadastro realizado com sucesso!\n");
-                tipo_usuario = sistema.usuario_logado;
+                sair = true;
               } else {
                 console.log(
                   "Email ou senha incorretos ou usuário já cadastrado.\n",
@@ -172,7 +171,7 @@ function menu_usuario(){
 
               if (retorno_agente === true) {
                 console.log("Cadastro realizado com sucesso!\n");
-                tipo_usuario = sistema.usuario_logado;
+                sair = true;
               } else {
                 console.log(
                   "Email ou senha incorretos ou usuário já cadastrado.\n",
