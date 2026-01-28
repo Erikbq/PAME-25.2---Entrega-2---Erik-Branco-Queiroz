@@ -70,16 +70,15 @@ export class Sistema {
         this.#usuario_logado = 1;
         this.#email_atual = email;
         return true;
-      }
+      } 
     } else if (this.#verifica_email_condutores(email)) {
       if (this.#condutores.get(email).validarSenha(senha)) {
         this.#usuario_logado = 2;
         this.#email_atual = email;
         return true;
       }
-    } else {
-      return false;
-    }
+    } 
+    return false;
   }
 
   // Fazer cadastro
@@ -116,7 +115,7 @@ export class Sistema {
   // Sair do sistema
 
   sair_sistema() {
-    this.#usuario_logado = 0;
+    return true;
   }
   // ---------------------------------------------------------------------------------------
 
