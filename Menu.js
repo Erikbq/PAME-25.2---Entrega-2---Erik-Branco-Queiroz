@@ -243,28 +243,44 @@ function menu_agente(){
             case 2:
                 console.log("----------  Opção escolhida: Ver Lista de Veículos  ----------\n");
                 const lista_carros = sistema.ver_lista_veiculos();
-                console.log("Extraindo informações...");
-                for (const carro of lista_carros) {
-                    console.log("-------------------------------------------\n");
-                    console.log("Placa: " + carro[0] + "\n");
-                    console.log("Modelo: " + carro[1] + "\n");
-                    console.log("Marca: " + carro[2] + "\n");
-                    console.log("Cor: " + carro[3] + "\n");
-                    console.log("-------------------------------------------\n");
+                try{
+                    if(!lista_carros){
+                        throw new Error("Não há veículos cadastrados.\n");
+                    }
+                    console.log("Extraindo informações...");
+                    for (const carro of lista_carros) {
+                        console.log("-------------------------------------------\n");
+                        console.log("Placa: " + carro[0] + "\n");
+                        console.log("Modelo: " + carro[1] + "\n");
+                        console.log("Marca: " + carro[2] + "\n");
+                        console.log("Cor: " + carro[3] + "\n");
+                        console.log("-------------------------------------------\n");
+                    }
+                }
+                catch(error){
+                    console.log(error.message);
                 }
                 break;
 
             case 3:
                 console.log("----------  Opção escolhida: Ver Lista de Condutores  ----------\n");
                 const lista_condutores = sistema.ver_lista_condutores();
-                console.log("Extraindo informações...");
-                for (const condutor of lista_condutores) {
-                    console.log("-------------------------------------------\n");
-                    console.log("ID do condutor: " + condutor[0] + "\n");
-                    console.log("Nome do condutor: " + condutor[1] + "\n");
-                    console.log("CPF do condutor: " + formata_cpf(condutor[2]) + "\n");
-                    console.log("Data de nascimento do condutor: " + formata_data(condutor[3]) + "\n");
-                    console.log("-------------------------------------------\n");
+                try{
+                    if(!lista_condutores){
+                        throw new Error("Não há condutores cadastrados.\n");
+                    }
+                    console.log("Extraindo informações...");
+                    for (const condutor of lista_condutores) {
+                        console.log("-------------------------------------------\n");
+                        console.log("ID do condutor: " + condutor[0] + "\n");
+                        console.log("Nome do condutor: " + condutor[1] + "\n");
+                        console.log("CPF do condutor: " + formata_cpf(condutor[2]) + "\n");
+                        console.log("Data de nascimento do condutor: " + formata_data(condutor[3]) + "\n");
+                        console.log("-------------------------------------------\n");
+                    }
+                }
+                catch(error){
+                    console.log(error.message);
                 }
                 break;
 
@@ -281,16 +297,24 @@ function menu_agente(){
             case 5:
                 console.log("----------  Opção escolhida: Ver Lista de Multas  ----------\n");
                 const lista_multas = sistema.ver_multas();
-                console.log("Extraindo informações...");
-                for (const multa of lista_multas) {
-                    console.log("-------------------------------------------\n");
-                    console.log("ID da multa: " + multa[0] + "\n");
-                    console.log("ID do condutor: " + multa[1] + "\n");
-                    console.log("Tipo de infração: " + multa[2] + "\n");
-                    console.log("Valor da multa: " + formata_valor(multa[3]) + "\n",);
-                    console.log("Data de ocorrência: " + formata_data(multa[4]) + "\n");
-                    console.log("Status da multa: " + multa[5] + "\n");
-                    console.log("-------------------------------------------\n");
+                try{
+                    if(!lista_multas){
+                        throw new Error("Não há multas cadastradas.\n");
+                    }
+                    console.log("Extraindo informações...");
+                    for (const multa of lista_multas) {
+                        console.log("-------------------------------------------\n");
+                        console.log("ID da multa: " + multa[0] + "\n");
+                        console.log("ID do condutor: " + multa[1] + "\n");
+                        console.log("Tipo de infração: " + multa[2] + "\n");
+                        console.log("Valor da multa: " + formata_valor(multa[3]) + "\n",);
+                        console.log("Data de ocorrência: " + formata_data(multa[4]) + "\n");
+                        console.log("Status da multa: " + multa[5] + "\n");
+                        console.log("-------------------------------------------\n");
+                    }
+                }
+                catch(error){
+                    console.log(error.message);
                 }
                 break;
 
@@ -371,15 +395,23 @@ function menu_condutor(){
             "----------  Opção escolhida: Ver Minhas Multas ----------\n",
           );
           const lista_minhas_multas = sistema.ver_multas_condutor();
-          console.log("Extraindo informações...");
-          for (const multa of lista_minhas_multas) {
-            console.log("-------------------------------------------\n");
-            console.log("ID da multa: " + multa[0] + "\n");
-            console.log("Tipo de infração: " + multa[1] + "\n");
-            console.log("Valor da multa: " + multa[2] + "\n");
-            console.log("Data de ocorrência: " + multa[3] + "\n");
-            console.log("Status da multa: " + multa[4] + "\n");
-            console.log("-------------------------------------------\n");
+          try{
+            if(!lista_minhas_multas){
+                throw new Error("Não há multas cadastradas.\n");
+            }
+            console.log("Extraindo informações...");
+            for (const multa of lista_minhas_multas) {
+                console.log("-------------------------------------------\n");
+                console.log("ID da multa: " + multa[0] + "\n");
+                console.log("Tipo de infração: " + multa[1] + "\n");
+                console.log("Valor da multa: " + multa[2] + "\n");
+                console.log("Data de ocorrência: " + multa[3] + "\n");
+                console.log("Status da multa: " + multa[4] + "\n");
+                console.log("-------------------------------------------\n");
+            }
+          }
+          catch(error){
+            console.log(error.message);
           }
           break;
 

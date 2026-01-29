@@ -21,7 +21,7 @@ export class Sistema {
   constructor() {
     this.#condutores = new Map();
     this.#agentes = new Map();
-    this.#colecao_carros = [];
+    this.#colecao_carros = new Map();
     this.#colecao_multas = new Map();
     this.#usuario_logado = 0;
     this.#email_atual = null;

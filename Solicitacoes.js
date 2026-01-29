@@ -39,7 +39,7 @@ export function solicitar_email() {
 }
 
 // Função para verificar senha
-function verificar_senha(senha) {
+function verificar_senha(senha) { 
   // Critérios
   const tem_minuscula = /[a-z]/.test(senha);
   const tem_maiuscula = /[A-Z]/.test(senha);
