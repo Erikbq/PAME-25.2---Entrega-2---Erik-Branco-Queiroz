@@ -243,4 +243,6 @@ deslogar(){
   this.#id_atual = null;
 }
 
+
+
 }

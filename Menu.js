@@ -33,6 +33,9 @@ let encerrar_programa = false;
 
 function main(){
 
+        cria_para_teste();
+
+
         while(!encerrar_programa){
             switch(sistema.usuario_logado){
                 case 0:
@@ -248,7 +251,7 @@ function menu_agente(){
                 console.log("----------  Opção escolhida: Ver Lista de Veículos  ----------\n");
                 const lista_carros = sistema.ver_lista_veiculos();
                 try{
-                    if(!lista_carros){
+                    if(lista_carros.length === 0){
                         throw new Error("Não há veículos cadastrados.\n");
                     }
                     console.log("Extraindo informações...");
@@ -271,7 +274,7 @@ function menu_agente(){
                 console.log("----------  Opção escolhida: Ver Lista de Condutores  ----------\n");
                 const lista_condutores = sistema.ver_lista_condutores();
                 try{
-                    if(!lista_condutores){
+                    if(lista_condutores.length === 0){
                         throw new Error("Não há condutores cadastrados.\n");
                     }
                     console.log("Extraindo informações...");
@@ -303,7 +306,7 @@ function menu_agente(){
                 console.log("----------  Opção escolhida: Ver Lista de Multas  ----------\n");
                 const lista_multas = sistema.ver_multas();
                 try{
-                    if(!lista_multas){
+                    if(lista_multas.length === 0){
                         throw new Error("Não há multas cadastradas.\n");
                     }
                     console.log("Extraindo informações...");
@@ -401,7 +404,7 @@ function menu_condutor(){
           );
           const lista_minhas_multas = sistema.ver_multas_condutor();
           try{
-            if(!lista_minhas_multas){
+            if(lista_minhas_multas.length === 0){
                 throw new Error("Não há multas cadastradas.\n");
             }
             console.log("Extraindo informações...");
@@ -470,6 +473,14 @@ function menu_condutor(){
           break;
       }
     } while (!deslogar);
+}
+
+function cria_para_teste(){
+    sistema.cadastro_agente("Gabriel Santos", "11111111111", "gabrielsantos@example.com", "Testesenha!1", "123456");
+    sistema.cadastro_condutor("Julia Carvalho", "22222222222", "01012001", "juliacarvalho@example.com", "Testesenha!2");
+    sistema.cadastrar_veiculo("yyy1020", "corolla", "toyota", "preto");
+    sistema.deslogar();
+    // Não da para aplicar a multa por conta das proteções do sistema contra multa fantasmas.
 }
 
 main();
