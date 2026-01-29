@@ -7,7 +7,7 @@ import { Sistema } from "./Sistema.js";
 import { solicitar_email } from "./Solicitacoes.js";
 import { solicitar_senha } from "./Solicitacoes.js";
 import { solicitar_cpf } from "./Solicitacoes.js";
-import { solicitar_data } from "./Solicitacoes.js";
+import { solicitar_data_nascimento } from "./Solicitacoes.js";
 import { solicitar_nome } from "./Solicitacoes.js";
 import { formata_cpf } from "./Solicitacoes.js";
 import { formata_data } from "./Solicitacoes.js";
@@ -19,6 +19,7 @@ import { solicitar_id_multa } from "./Solicitacoes.js";
 import { solicitar_status_multa } from "./Solicitacoes.js";
 import { solicitar_placa } from "./Solicitacoes.js";
 import { solicitar_matricula } from "./Solicitacoes.js";
+import { solicitar_data } from "./Solicitacoes.js";
 
 
 
@@ -120,7 +121,7 @@ function menu_usuario(){
               const cpf_condutor = solicitar_cpf();
 
               // Solicita e verifica a data
-              const data_nascimento_condutor = solicitar_data();
+              const data_nascimento_condutor = solicitar_data_nascimento();
 
               // Solicitação e verificação do email
               const email_condutor = solicitar_email();
@@ -228,7 +229,8 @@ function menu_agente(){
         console.log("4- Aplicar Multa\n");
         console.log("5- Ver Lista de Multas\n");
         console.log("6- Alterar Status da Multa\n");
-        console.log("7- Deslogar\n");
+        console.log("7- Buscar Carro Por Placa\n");
+        console.log("8- Deslogar\n");
         console.log(
           "----------------------------------------------------------------------------------------\n",
         );
@@ -345,6 +347,23 @@ function menu_agente(){
                 break;
 
             case 7:
+                console.log("----------  Opção escolhida: Buscar Carro Por Placa  ----------\n");
+                const placa_a = solicitar_placa();
+                const carro = sistema.buscar_por_placa(placa_a);
+                if(carro === false){
+                    console.log("Carro não encontrado.\n");
+                }
+                else{
+                    console.log("Extraindo informações...");
+                    console.log("Placa: " + carro[0] + "\n");
+                    console.log("Modelo: " + carro[1] + "\n");
+                    console.log("Marca: " + carro[2] + "\n");
+                    console.log("Cor: " + carro[3] + "\n"); 
+                    console.log("ID do dono do veículo: " + carro[4] + "\n");
+                }
+                break;
+
+            case 8:
             console.log("----------  Opção escolhida: Deslogar  ----------\n");
             console.log("Deslogando...\n");
             sistema.deslogar();
@@ -377,7 +396,8 @@ function menu_condutor(){
       console.log("3- Cadastrar Veículo\n");
       console.log("4- Pagar Multa\n");
       console.log("5- Recorrer Multa\n");
-      console.log("6- Deslogar\n");
+      console.log("6- Buscar Carro Por Placa\n");
+      console.log("7- Deslogar\n");
       console.log(
         "----------------------------------------------------------------------------------------\n",
       );
@@ -393,8 +413,14 @@ function menu_condutor(){
           console.log("Extraindo informações...");
           console.log("ID do Condutor: " + dados_condutor[0] + "\n");
           console.log("Nome do Condutor: " + dados_condutor[1] + "\n");
-          console.log("CPF do Condutor: " + formata_cpf(dados_condutor[2]) + "\n");
-          console.log("Data de Nascimento do Condutor: " + formata_data(dados_condutor[3]) + "\n");
+          console.log(
+            "CPF do Condutor: " + formata_cpf(dados_condutor[2]) + "\n",
+          );
+          console.log(
+            "Data de Nascimento do Condutor: " +
+              formata_data(dados_condutor[3]) +
+              "\n",
+          );
           console.log("Email do Condutor: " + dados_condutor[4] + "\n");
           break;
 
@@ -403,22 +429,21 @@ function menu_condutor(){
             "----------  Opção escolhida: Ver Minhas Multas ----------\n",
           );
           const lista_minhas_multas = sistema.ver_multas_condutor();
-          try{
-            if(lista_minhas_multas.length === 0){
-                throw new Error("Não há multas cadastradas.\n");
+          try {
+            if (lista_minhas_multas.length === 0) {
+              throw new Error("Não há multas cadastradas.\n");
             }
             console.log("Extraindo informações...");
             for (const multa of lista_minhas_multas) {
-                console.log("-------------------------------------------\n");
-                console.log("ID da multa: " + multa[0] + "\n");
-                console.log("Tipo de infração: " + multa[1] + "\n");
-                console.log("Valor da multa: " + multa[2] + "\n");
-                console.log("Data de ocorrência: " + multa[3] + "\n");
-                console.log("Status da multa: " + multa[4] + "\n");
-                console.log("-------------------------------------------\n");
+              console.log("-------------------------------------------\n");
+              console.log("ID da multa: " + multa[0] + "\n");
+              console.log("Tipo de infração: " + multa[1] + "\n");
+              console.log("Valor da multa: " + multa[2] + "\n");
+              console.log("Data de ocorrência: " + multa[3] + "\n");
+              console.log("Status da multa: " + multa[4] + "\n");
+              console.log("-------------------------------------------\n");
             }
-          }
-          catch(error){
+          } catch (error) {
             console.log(error.message);
           }
           break;
@@ -436,16 +461,13 @@ function menu_condutor(){
           break;
 
         case 4:
-          console.log(
-            "----------  Opção escolhida: Pagar Multa  ----------\n",
-          );
+          console.log("----------  Opção escolhida: Pagar Multa  ----------\n");
           const id_multa_pagar = solicitar_id_multa();
-          if(sistema.pagar_multa(id_multa_pagar)){
+          if (sistema.pagar_multa(id_multa_pagar)) {
             console.log("Multa paga com sucesso!\n");
-          }
-          else{
+          } else {
             console.log("Erro ao pagar multa. ID não encontrado.\n");
-          };
+          }
           break;
 
         case 5:
@@ -453,15 +475,32 @@ function menu_condutor(){
             "----------  Opção escolhida: Recorrer Multa ----------\n",
           );
           const id_multa_recorrer = solicitar_id_multa();
-          if(sistema.recorrer_multa(id_multa_recorrer)){
+          if (sistema.recorrer_multa(id_multa_recorrer)) {
             console.log("Multa recorrida com sucesso!\n");
-          }
-          else{
+          } else {
             console.log("Erro ao recorrer à multa. ID não encontrado.\n");
-          };
+          }
           break;
 
         case 6:
+          console.log(
+            "----------  Opção escolhida: Buscar Carro Por Placa  ----------\n",
+          );
+          const placa_c = solicitar_placa();
+          const carro = sistema.buscar_por_placa(placa_c);
+          if (carro === false) {
+            console.log("Carro não encontrado.\n");
+          } else {
+            console.log("Extraindo informações...");
+            console.log("Placa: " + carro[0] + "\n");
+            console.log("Modelo: " + carro[1] + "\n");
+            console.log("Marca: " + carro[2] + "\n");
+            console.log("Cor: " + carro[3] + "\n");
+            console.log("ID do dono do veículo: " + carro[4] + "\n");
+          }
+          break;
+
+        case 7:
           console.log("----------  Opção escolhida: Deslogar  ----------\n");
           console.log("Deslogando...\n");
           sistema.deslogar();

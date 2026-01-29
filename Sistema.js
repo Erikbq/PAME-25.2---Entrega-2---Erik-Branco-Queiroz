@@ -243,6 +243,20 @@ deslogar(){
   this.#id_atual = null;
 }
 
-
+buscar_por_placa(placa){
+  if(!(this.#colecao_carros.has(placa))){
+    return false;
+  }
+  
+  const carro = this.#colecao_carros.get(placa);
+  const lista_carro = [
+    carro.placa,
+    carro.modelo,
+    carro.marca,
+    carro.cor,
+    carro.id_dono_veiculo,
+  ]
+  return lista_carro;
+}
 
 }

@@ -144,7 +144,7 @@ export function solicitar_cpf() {
   return cpf_correto;
 }
 
-export function solicitar_data() {
+export function solicitar_data_nascimento() {
   let data_correta;
   while (true) {
     const data_nascimento = readlineSync.question(
@@ -343,7 +343,9 @@ export function solicitar_placa() {
 export function solicitar_matricula() {
   let matricula_correta;
   while (true) {
-    const matricula = readlineSync.question("Qual é o seu número de matrícula? ");
+    const matricula = readlineSync.question(
+      "Qual é o seu número de matrícula? ",
+    );
 
     try {
       if (!matricula) {
@@ -361,4 +363,32 @@ export function solicitar_matricula() {
     }
   }
   return matricula_correta;
+}
+
+export function solicitar_data() {
+  let data_correta;
+  while (true) {
+    const data = readlineSync.question(
+      "Qual é a data da ocorrência da multa (dd/mm/aaaa)? ",
+    );
+
+    if (!data) {
+      console.log("Digite algo no campo\n");
+      continue;
+    }
+
+    const data_limpa = data.replace(/\D/g, "");
+
+    try {
+      if (!(data_limpa.length === 8)) {
+        throw new Error("Data inválida");
+      }
+    } catch (error) {
+      console.log(error.message);
+      continue;
+    }
+    data_correta = data_limpa;
+    break;
+  }
+  return data_correta;
 }
