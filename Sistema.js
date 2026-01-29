@@ -233,20 +233,62 @@ export class Sistema {
   }
 
   // Retorna a arrecadação total das multas
-  relatorio_multas(data_inicial, data_final){
-    // Cria uma variável para armazenar o valor final 
+  relatorio_multas(data_inicial, data_final) {
+    // Cria uma variável para armazenar o valor final
     let arrecadacao_multas = 0;
     // Itera por todos os objetos Multa cadastrados
-    for(const multa of this.#colecao_multas.values()){
+    for (const multa of this.#colecao_multas.values()) {
       // Verifica se está no prazo escolhidp
-      if(inverte_data(multa.data) >= data_inicial && inverte_data(multa.data) <= data_final){
+      if (
+        inverte_data(multa.data) >= data_inicial &&
+        inverte_data(multa.data) <= data_final
+      ) {
         // Verifica se a multa está paga
-        if(multa.status === "Paga"){
+        if (multa.status === "Paga") {
           arrecadacao_multas += parseFloat(multa.valor);
         }
       }
     }
     return arrecadacao_multas;
+  }
+
+  // Editar dados do agente
+  editar_dados_agente(senha_atual, novo_nome, novo_email, nova_senha) {
+    // Pega o objeto atual
+    const agente = this.#agentes.get(this.#email_atual);
+
+    // Verifica se a senha atual está correta
+    if (!agente.validarSenha(senha_atual)) {
+      return false;
+    }
+
+    // Atualiza Nome
+    if (novo_nome) agente.nome = novo_nome;
+
+    // Atualiza Senha
+    if (nova_senha) agente.atualizarSenha(nova_senha);
+
+    // Atualiza Email
+    if (novo_email && novo_email !== this.#email_atual) {
+      // Verifica se o email já existe em outro lugar
+      if (this.#verifica_email_geral(novo_email)) {
+        throw new Error("Este email já está em uso.");
+      }
+
+      // Remove a entrada antiga do Map
+      this.#agentes.delete(this.#email_atual);
+
+      // Atualiza o objeto
+      agente.email = novo_email;
+
+      // Insere na nova chave do Map
+      this.#agentes.set(novo_email, agente);
+
+      // Atualiza o rastreador de sessão
+      this.#email_atual = novo_email;
+    }
+
+    return true;
   }
   // -------------------------------------------------------------------------------------------------------------
 
@@ -335,13 +377,49 @@ export class Sistema {
     }
     return false;
   }
+
+  // Editar dados do condutor
+  editar_dados_condutor(senha_atual, novo_nome, novo_email, nova_data, nova_senha,) {
+    // Pega o objeto atual
+    const condutor = this.#condutores.get(this.#email_atual);
+
+    // Verifica se a senha atual está correta
+    if (!condutor.validarSenha(senha_atual)) {
+      return false;
+    }
+
+    // Atualiza Nome
+    if (novo_nome) condutor.nome = novo_nome;
+    // Atualiza Data de Nascimento
+    if (nova_data) condutor.data_nascimento = nova_data;
+    // Atualiza Senha
+    if (nova_senha) condutor.atualizarSenha(nova_senha);
+
+    // Atualiza Email
+    if (novo_email && novo_email !== this.#email_atual) {
+      // Verifica se o email já existe em outro lugar
+      if (this.#verifica_email_geral(novo_email)) {
+        throw new Error("Este email já está em uso.");
+      }
+      // Remove a entrada antiga do Map
+      this.#condutores.delete(this.#email_atual);
+      // Atualiza o objeto
+      condutor.email = novo_email;
+      // Insere na nova chave do Map
+      this.#condutores.set(novo_email, condutor);
+      // Atualiza o rastreador de sessão
+      this.#email_atual = novo_email;
+    }
+
+    return true;
+  }
   // --------------------------------------------------------------------------------------
 
   // ------------------------------ Métodos Gerais ----------------------------------------
 
   // deslogar usuário
   deslogar() {
-    // Altera os atributos internos para deslogar o usuário 
+    // Altera os atributos internos para deslogar o usuário
     this.#usuario_logado = 0;
     this.#email_atual = null;
     this.#id_atual = null;

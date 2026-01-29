@@ -256,7 +256,8 @@ function menu_agente(){
         console.log("6- Alterar Status da Multa\n");
         console.log("7- Buscar Carro Por Placa\n");
         console.log("8- Relatório de Multas");
-        console.log("9- Deslogar\n");
+        console.log("9- Editar meus dados\n");
+        console.log("10- Deslogar\n");
         console.log(
           "----------------------------------------------------------------------------------------\n",
         );
@@ -391,9 +392,8 @@ function menu_agente(){
                 console.log("Status da multa: " + multa[5] + "\n");
                 console.log("-------------------------------------------\n");
               }
-            } 
-            // Trata dos erros
-            catch (error) {
+            } catch (error) {
+              // Trata dos erros
               console.log(error.message);
             }
             break;
@@ -414,9 +414,8 @@ function menu_agente(){
               } else {
                 throw new Error("Erro ao alterar status da multa.\n");
               }
-            } 
-            // Trata dos erros
-            catch (error) {
+            } catch (error) {
+              // Trata dos erros
               console.log(error.message);
             }
             break;
@@ -433,7 +432,7 @@ function menu_agente(){
             // Verifica se deu erro
             if (carro === false) {
               console.log("Carro não encontrado.\n");
-            } 
+            }
             // Imprime as informações
             else {
               console.log("Extraindo informações...");
@@ -452,18 +451,72 @@ function menu_agente(){
             );
             // Solicitações de informação
             const data_inicio = solicitar_data();
-            const data_fim = solicitar_data();  
+            const data_fim = solicitar_data();
 
             // Pega o relatório
-            const arrecadacao = sistema.relatorio_multas(inverte_data(data_inicio), inverte_data(data_fim));
+            const arrecadacao = sistema.relatorio_multas(
+              inverte_data(data_inicio),
+              inverte_data(data_fim),
+            );
             console.log("Extraindo informações...\n");
             console.log("Somando multas...\n");
-            console.log("A arrecadação de multas no peíodo de " + formata_data(data_inicio) + " até " + formata_data(data_fim) + " foi de " + formata_valor(arrecadacao) + "\n");
-            
+            console.log(
+              "A arrecadação de multas no peíodo de " +
+                formata_data(data_inicio) +
+                " até " +
+                formata_data(data_fim) +
+                " foi de " +
+                formata_valor(arrecadacao) +
+                "\n",
+            );
+
+            break;
+
+          // Editar meus dados
+          case 9:
+            console.log(
+              "----------  Opção escolhida: Editar meus dados  ----------\n",
+            );
+
+            // Solicita a senha atual
+            console.log("Para confirmar a alteração, digite sua senha atual:");
+            const senha_confirma = solicitar_senha();
+
+            console.log("O que você deseja alterar?");
+            console.log("1. Nome");
+            console.log("2. Email");
+            console.log("3. Senha");
+            const escolha_editar = readlineSync.questionInt("Opção: ");
+
+            // Cria as variáveis vazias
+            let novo_nome = null;
+            let novo_email = null;
+            let nova_senha = null;
+
+            // Faz a solicitação com base na escolha
+            if (escolha_editar === 1) novo_nome = solicitar_nome();
+            if (escolha_editar === 2) novo_email = solicitar_email();
+            if (escolha_editar === 3) nova_senha = solicitar_senha();
+
+            try {
+                // Chama a edição de dados e armazena o retorno
+                const sucesso = sistema.editar_dados_agente(senha_confirma, novo_nome, novo_email, nova_senha);
+        
+                // Verifica se deu erro 
+                if(sucesso) {
+                    console.log("Dados atualizados com sucesso!");
+                } else {
+                    console.log("Senha atual incorreta. Operação cancelada.");
+                }
+            } 
+            // Trata dos erros
+            catch (e) {
+                console.log(e.message);
+            }
             break;
 
           // Deslogar
-          case 9:
+          case 10:
             console.log("----------  Opção escolhida: Deslogar  ----------\n");
             console.log("Deslogando...\n");
             // Altera as variáveis para deslogar o usuário
@@ -500,7 +553,8 @@ function menu_condutor(){
       console.log("5- Recorrer Multa\n");
       console.log("6- Buscar Carro Por Placa\n");
       console.log("7- Excluir Veículo\n");
-      console.log("8- Deslogar\n");
+      console.log("8- Editar meus dados\n");
+      console.log("9- Deslogar\n");
       console.log(
         "----------------------------------------------------------------------------------------\n",
       );
@@ -555,9 +609,8 @@ function menu_condutor(){
               console.log("Status da multa: " + multa[4] + "\n");
               console.log("-------------------------------------------\n");
             }
-          } 
-          // Trata dos erros
-          catch (error) {
+          } catch (error) {
+            // Trata dos erros
             console.log(error.message);
           }
           break;
@@ -617,7 +670,7 @@ function menu_condutor(){
           // Verifica se deu erro
           if (carro === false) {
             console.log("Carro não encontrado.\n");
-          } 
+          }
           // Imprime as informações
           else {
             console.log("Extraindo informações...");
@@ -644,8 +697,51 @@ function menu_condutor(){
           }
           break;
 
-        // Deslogar
         case 8:
+            console.log("----------  Opção escolhida: Editar meus dados  ----------\n");
+
+            // Solicita a senha atual
+            console.log("Para confirmar a alteração, digite sua senha atual:");
+            const senha_confirma = solicitar_senha();
+
+            console.log("O que você deseja alterar?");
+            console.log("1. Nome");
+            console.log("2. data");
+            console.log("3. Email");
+            console.log("4. Senha");
+            const escolha_editar = readlineSync.questionInt("Opção: ");
+
+            // Cria as variáveis vazias
+            let novo_nome = null;
+            let nova_data = null;
+            let novo_email = null;
+            let nova_senha = null;
+
+            // Faz a solicitação com base na escolha
+            if (escolha_editar === 1) novo_nome = solicitar_nome();
+            if (escolha_editar === 2) nova_data = solicitar_data_nascimento();
+            if (escolha_editar === 3) novo_email = solicitar_email();
+            if (escolha_editar === 4) nova_senha = solicitar_senha();
+
+            try {
+                // Chama a edição de dados e armazena o retorno
+                const sucesso = sistema.editar_dados_condutor(senha_confirma, novo_nome, novo_email, nova_data, nova_senha);
+
+                // Verifica se deu erro
+                if (sucesso) {
+                    console.log("Dados atualizados com sucesso!");
+                } else {
+                    console.log("Senha atual incorreta. Operação cancelada.");
+                }
+            } 
+            // Trata dos erros
+            catch (e) {
+                console.log(e.message);
+            }
+            break;
+
+        // Deslogar
+        case 9:
           console.log("----------  Opção escolhida: Deslogar  ----------\n");
           console.log("Deslogando...\n");
           // Altera as variáveis para deslogar o usuário

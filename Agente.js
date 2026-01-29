@@ -62,4 +62,18 @@ export class Agente {
   get numero_matricula() {
     return this.#numero_matricula;
   }
+
+  // Setters para modificar os atributos privados da classe Agente.
+  set nome(novo_nome) {
+    this.#nome = novo_nome;
+  }
+
+  set email(novo_email) {
+    this.#email = novo_email;
+  }
+
+  // Para senha precisa fazer o hash
+  atualizarSenha(nova_senha_plana) {
+    this.#senha_hash = this.#gerarHashSenha(nova_senha_plana);
+  }
 }
