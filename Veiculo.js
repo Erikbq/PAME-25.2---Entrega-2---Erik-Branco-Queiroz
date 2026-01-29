@@ -38,4 +38,9 @@ export class Veiculo {
     get cor() { 
         return this.#cor;
     }
+
+    get id_dono_veiculo() {
+        return this.#id_dono_veiculo;
+    }
+
 }

@@ -258,6 +258,7 @@ function menu_agente(){
                         console.log("Modelo: " + carro[1] + "\n");
                         console.log("Marca: " + carro[2] + "\n");
                         console.log("Cor: " + carro[3] + "\n");
+                        console.log("ID do dono do veículo: " + carro[4] + "\n");
                         console.log("-------------------------------------------\n");
                     }
                 }

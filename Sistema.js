@@ -147,6 +147,7 @@ export class Sistema {
         veiculo.modelo,
         veiculo.marca,
         veiculo.cor,
+        veiculo.id_dono_veiculo,
       ]);
     }
     return lista_carros;
@@ -203,7 +204,7 @@ ver_dados_condutor() {
 ver_multas_condutor() {
     let lista_multas = [];
     for (const multa of this.#colecao_multas.values()) {
-        if(multa.id_cliente === this.#condutores.get(this.#email_atual).id_condutor){
+        if(multa.id_cliente === this.#id_atual){
             lista_multas.push([multa.id_multa, multa.tipo_infracao, multa.valor, multa.data, multa.status]);
         }
     }
