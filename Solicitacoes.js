@@ -327,6 +327,9 @@ export function solicitar_placa() {
       if (!(placa.length === 7)) {
         throw new Error("Placa inválida");
       }
+      if (!/^[a-zA-Z]{3}[0-9][a-zA-Z0-9][0-9]{2}$/.test(placa)) {
+        throw new Error("Formato de placa inválido");
+      }
       placa_correta = placa;
       break;
     } catch (error) {
@@ -346,11 +349,11 @@ export function solicitar_matricula() {
       if (!matricula) {
         throw new Error("Digite algo no campo\n");
       }
-      const matricula = matricula.replace(/\D/g, "");
-      if (!matricula) {
+      const matricula_limpa = matricula.replace(/\D/g, "");
+      if (!matricula_limpa) {
         throw new Error("Número de matrícula inválido. Digite apenas números.");
       }
-      matricula_correta = matricula;
+      matricula_correta = matricula_limpa;
       break;
     } catch (error) {
       console.log(error.message);
