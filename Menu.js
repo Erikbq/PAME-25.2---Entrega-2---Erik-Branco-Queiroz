@@ -20,6 +20,8 @@ import { solicitar_status_multa } from "./Solicitacoes.js";
 import { solicitar_placa } from "./Solicitacoes.js";
 import { solicitar_matricula } from "./Solicitacoes.js";
 import { solicitar_data } from "./Solicitacoes.js";
+import { inverte_data } from "./Solicitacoes.js";
+
 
 // Importação da biblioteca de input
 import readlineSync from 'readline-sync';
@@ -253,7 +255,8 @@ function menu_agente(){
         console.log("5- Ver Lista de Multas\n");
         console.log("6- Alterar Status da Multa\n");
         console.log("7- Buscar Carro Por Placa\n");
-        console.log("8- Deslogar\n");
+        console.log("8- Relatório de Multas");
+        console.log("9- Deslogar\n");
         console.log(
           "----------------------------------------------------------------------------------------\n",
         );
@@ -442,8 +445,25 @@ function menu_agente(){
             }
             break;
 
-          // Deslogar
+          // Relatório de multas
           case 8:
+            console.log(
+              "----------  Opção escolhida: Relatório de Multas  ----------\n",
+            );
+            // Solicitações de informação
+            const data_inicio = solicitar_data();
+            const data_fim = solicitar_data();  
+
+            // Pega o relatório
+            const arrecadacao = sistema.relatorio_multas(inverte_data(data_inicio), inverte_data(data_fim));
+            console.log("Extraindo informações...\n");
+            console.log("Somando multas...\n");
+            console.log("A arrecadação de multas no peíodo de " + formata_data(data_inicio) + " até " + formata_data(data_fim) + " foi de " + formata_valor(arrecadacao) + "\n");
+            
+            break;
+
+          // Deslogar
+          case 9:
             console.log("----------  Opção escolhida: Deslogar  ----------\n");
             console.log("Deslogando...\n");
             // Altera as variáveis para deslogar o usuário
@@ -646,9 +666,8 @@ function cria_para_teste(){
     sistema.cadastro_agente("Gabriel Santos", "11111111111", "gabrielsantos@example.com", "Testesenha!1", "123456");
     sistema.cadastro_condutor("Julia Carvalho", "22222222222", "01012001", "juliacarvalho@example.com", "Testesenha!2");
     sistema.cadastrar_veiculo("yyy1020", "corolla", "toyota", "preto");
-    sistema.cadastrar_multa("123456", "Ultrapassar sinal", "120", "09012026");
+    sistema.aplicar_multa("123456", "Ultrapassar sinal", "120", "09012026");
     sistema.deslogar();
-    // Não da para aplicar a multa por conta das proteções do sistema contra multa fantasmas.
 }
 
 main();

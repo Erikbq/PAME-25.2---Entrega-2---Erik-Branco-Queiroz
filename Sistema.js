@@ -5,6 +5,7 @@ import { Veiculo } from './Veiculo.js';
 import { Condutor } from './Condutor.js';
 import { Agente } from './Agente.js';
 import { Multa } from './Multa.js';
+import { inverte_data } from './Solicitacoes.js';
 
 
 // Definição da classe Sistema.
@@ -229,6 +230,23 @@ export class Sistema {
       return true;
     }
     return false;
+  }
+
+  // Retorna a arrecadação total das multas
+  relatorio_multas(data_inicial, data_final){
+    // Cria uma variável para armazenar o valor final 
+    let arrecadacao_multas = 0;
+    // Itera por todos os objetos Multa cadastrados
+    for(const multa of this.#colecao_multas.values()){
+      // Verifica se está no prazo escolhidp
+      if(inverte_data(multa.data) >= data_inicial && inverte_data(multa.data) <= data_final){
+        // Verifica se a multa está paga
+        if(multa.status === "Paga"){
+          arrecadacao_multas += parseFloat(multa.valor);
+        }
+      }
+    }
+    return arrecadacao_multas;
   }
   // -------------------------------------------------------------------------------------------------------------
 

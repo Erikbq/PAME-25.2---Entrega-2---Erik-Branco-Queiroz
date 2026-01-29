@@ -313,7 +313,7 @@ export function solicitar_valor() {
 
 // Função de formatação do valor
 export function formata_valor(valor) {
-  return valor + " R$";
+  return "R$ " + valor;
 }
 
 // Função de solicitação do id da multa
@@ -475,4 +475,18 @@ export function solicitar_data() {
     break;
   }
   return data_correta;
+}
+
+// Função para inverter a ordem das datas
+export function inverte_data(data) {
+  // Converte "DDMMAAAA" em número "AAAAMMDD"
+  // Isso permite comparar datas matematicamente
+  const converterData = (datastr) => {
+    const dia = datastr.substring(0, 2);
+    const mes = datastr.substring(2, 4);
+    const ano = datastr.substring(4, 8);
+    return parseInt(ano + mes + dia);
+  };
+
+  return converterData(data);
 }
