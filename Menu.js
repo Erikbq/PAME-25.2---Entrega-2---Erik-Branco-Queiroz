@@ -397,7 +397,8 @@ function menu_condutor(){
       console.log("4- Pagar Multa\n");
       console.log("5- Recorrer Multa\n");
       console.log("6- Buscar Carro Por Placa\n");
-      console.log("7- Deslogar\n");
+      console.log("7- Excluir Veículo\n");
+      console.log("8- Deslogar\n");
       console.log(
         "----------------------------------------------------------------------------------------\n",
       );
@@ -501,6 +502,18 @@ function menu_condutor(){
           break;
 
         case 7:
+          console.log(
+            "----------  Opção escolhida: Excluir Veículo ----------\n",
+          );
+          const placa_e = solicitar_placa();
+          if (sistema.excluir_veiculo(placa_e)) {
+            console.log("Veículo excluído com sucesso!\n");
+          } else {
+            console.log("Erro ao excluir carro. Placa não encontrada.\n");
+          }
+          break;
+
+        case 8:
           console.log("----------  Opção escolhida: Deslogar  ----------\n");
           console.log("Deslogando...\n");
           sistema.deslogar();

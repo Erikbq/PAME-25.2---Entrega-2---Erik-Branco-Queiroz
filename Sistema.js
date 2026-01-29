@@ -235,6 +235,14 @@ recorrer_multa(id_multa){
     }
     return false;
 }
+
+excluir_veiculo(placa){
+    if(this.#colecao_carros.has(placa)){
+        this.#colecao_carros.delete(placa);
+        return true;
+    }
+    return false;
+}
 // --------------------------------------------------------------------------------------
 
 deslogar(){
