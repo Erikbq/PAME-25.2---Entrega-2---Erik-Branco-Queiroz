@@ -8,14 +8,17 @@ export class Veiculo {
     #modelo;
     #marca;
     #cor;
+    #id_dono_veiculo;
+
 
     // Construtor da classe Veiculo.
-    constructor(placa, modelo, marca, cor) {
+    constructor(placa, modelo, marca, cor, id) {
 
         this.#placa = placa;
         this.#modelo = modelo;
         this.#marca = marca;
         this.#cor = cor;
+        this.#id_dono_veiculo = id;
 
     }
 

@@ -16,6 +16,7 @@ export class Sistema {
   #colecao_multas;
   #usuario_logado; // 0 = não está logado; 1 = agente; 2 = condutor
   #email_atual;
+  #id_atual;
 
   // Construtor da classe Sistema. Cria os arrays vazios.
   constructor() {
@@ -25,6 +26,7 @@ export class Sistema {
     this.#colecao_multas = new Map();
     this.#usuario_logado = 0;
     this.#email_atual = null;
+    this.#id_atual = null;
   }
 
   // ---------------------  Funções auxiliares  --------------------------------
@@ -69,12 +71,14 @@ export class Sistema {
       if (this.#agentes.get(email).validarSenha(senha)) {
         this.#usuario_logado = 1;
         this.#email_atual = email;
+        this.#id_atual = this.#agentes.get(email).id_agente;
         return true;
       } 
     } else if (this.#verifica_email_condutores(email)) {
       if (this.#condutores.get(email).validarSenha(senha)) {
         this.#usuario_logado = 2;
         this.#email_atual = email;
+        this.#id_atual = this.#condutores.get(email).id_condutor;
         return true;
       }
     } 
@@ -94,6 +98,7 @@ export class Sistema {
       this.#condutores.set(email, novo_condutor);
       this.#usuario_logado = 2;
       this.#email_atual = email;
+      this.#id_atual = novo_condutor.id_condutor;
       return true;
     } else {
       return false;
@@ -106,6 +111,7 @@ export class Sistema {
       this.#agentes.set(email, novo_agente);
       this.#usuario_logado = 1;
       this.#email_atual = email;
+      this.#id_atual = novo_agente.id_agente;
       return true;
     } else {
       return false;
@@ -135,7 +141,7 @@ export class Sistema {
 
   ver_lista_veiculos() {
     let lista_carros = [];
-    for (const veiculo of this.#colecao_carros) {
+    for (const veiculo of this.#colecao_carros.values()) {
       lista_carros.push([
         veiculo.placa,
         veiculo.modelo,
@@ -205,8 +211,11 @@ ver_multas_condutor() {
 }
 
 cadastrar_veiculo(placa, modelo, marca, cor) {
-    const novo_veiculo = new Veiculo(placa, modelo, marca, cor);
-    this.#colecao_carros.push(novo_veiculo);
+    if (this.#colecao_carros.has(placa)) {
+        return false;
+    }
+    const novo_veiculo = new Veiculo(placa, modelo, marca, cor, this.#id_atual);
+    this.#colecao_carros.set(placa, novo_veiculo);
     return true;
 }
 
@@ -230,6 +239,7 @@ recorrer_multa(id_multa){
 deslogar(){
   this.#usuario_logado = 0;
   this.#email_atual = null;
+  this.#id_atual = null;
 }
 
 }
