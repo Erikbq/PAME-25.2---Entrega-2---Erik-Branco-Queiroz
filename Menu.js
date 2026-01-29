@@ -3,7 +3,7 @@
 // Importação da classe de contrele "Sistema"
 import { Sistema } from "./Sistema.js";
 
-// Importação das validações do aquivo de utilidades "utils"
+// Importação das validações do aquivo de solicitações Solicitacoes.js
 import { solicitar_email } from "./Solicitacoes.js";
 import { solicitar_senha } from "./Solicitacoes.js";
 import { solicitar_cpf } from "./Solicitacoes.js";
@@ -21,23 +21,25 @@ import { solicitar_placa } from "./Solicitacoes.js";
 import { solicitar_matricula } from "./Solicitacoes.js";
 import { solicitar_data } from "./Solicitacoes.js";
 
-
-
-
 // Importação da biblioteca de input
 import readlineSync from 'readline-sync';
 
 // Cria um objeto da classe Sistema
 const sistema = new Sistema();
 
+// Variável para encerrar o programa
 let encerrar_programa = false;
 
+// Função principal para controlar o fluxo de execução
 function main(){
 
-        cria_para_teste();
+        // Chama a função para criar informações para testes
+        // Descomentar para utilizar nos testes
+        //cria_para_teste();
 
-
+        // Loop que controla a existência do programa 
         while(!encerrar_programa){
+            // Verifica quem está usando o sistema no momento
             switch(sistema.usuario_logado){
                 case 0:
                     menu_usuario();
@@ -55,6 +57,7 @@ function main(){
 // Função menu usuário
 function menu_usuario(){
 
+    // Controla o logout do condutor
     let sair = false;
 
     do {
@@ -72,9 +75,12 @@ function menu_usuario(){
         "----------------------------------------------------------------------------------------\n",
       );
 
+      // Pega o input do usuário
       const opcao_cadastro = readlineSync.questionInt();
 
+      // Verifica a opção escolhida
       switch (opcao_cadastro) {
+        // Fazer login
         case 1:
           console.log("----------  Opção escolhida: Fazer Login  ----------\n");
 
@@ -84,8 +90,10 @@ function menu_usuario(){
           // Solicitação e verificação da senha
           const senha = solicitar_senha();
 
+          // Faz o login e pega o retorno da função
           const retorno = sistema.fazer_login(email, senha);
 
+          // Verifica se deu erro
           if (retorno === true) {
             console.log("Login realizado com sucesso!\n");
             sair = true;
@@ -97,6 +105,7 @@ function menu_usuario(){
           }
           break;
 
+        // Fazer cadastro
         case 2:
           console.log(
             "----------  Opção escolhida: Fazer Cadastro  ----------\n",
@@ -106,9 +115,12 @@ function menu_usuario(){
           console.log("2- Agente de Trânsito\n");
           console.log("Digite o número referente a opção escolhida\n");
 
+          // Pega o input do usuário
           const tipo_cadastro = readlineSync.questionInt();
 
+          // Verifica a opção escolhida
           switch (tipo_cadastro) {
+            // Cadastro de condutor
             case 1:
               console.log(
                 "----------  Opção escolhida: Cadastro de Condutor  ----------\n",
@@ -129,6 +141,7 @@ function menu_usuario(){
               // Solicitação e verificação da senha
               const senha_condutor = solicitar_senha();
 
+              // Faz o cadastro de condutor e pega o retorno da função
               const retorno_condutor = sistema.cadastro_condutor(
                 nome_condutor,
                 cpf_condutor,
@@ -137,6 +150,7 @@ function menu_usuario(){
                 senha_condutor,
               );
 
+              // Verifica se deu erro
               if (retorno_condutor === true) {
                 console.log("Cadastro realizado com sucesso!\n");
                 sair = true;
@@ -150,6 +164,7 @@ function menu_usuario(){
               }
               break;
 
+            // Cadastro de agente
             case 2:
               console.log(
                 "----------  Opção escolhida: Cadastro de Agente  ----------\n",
@@ -167,8 +182,10 @@ function menu_usuario(){
               // Solicitação e verificação da senha
               const senha_agente = solicitar_senha();
 
+              // Solicita e verifica a matrícula
               const matricula_agente = solicitar_matricula();
 
+              // Faz o cadastro de agente e pega o retorno da função
               const retorno_agente = sistema.cadastro_agente(
                 nome_agente,
                 cpf_agente,
@@ -177,6 +194,7 @@ function menu_usuario(){
                 matricula_agente,
               );
 
+              // Verifica se deu erro
               if (retorno_agente === true) {
                 console.log("Cadastro realizado com sucesso!\n");
                 sair = true;
@@ -190,19 +208,23 @@ function menu_usuario(){
               }
               break;
 
+            // Trata de qualquer outro caso que não foi trabalhado
             default:
               console.log("Opção inválida. Tente novamente\n");
               break;
           }
           break;
 
+        // Sair do sistema
         case 3:
           console.log("----------  Opção escolhida: Sair  ----------\n");
           console.log("Encerrando o sistema...\n");
+          // Altera as variáveis para encerrar o sistema
           sair = true;
           encerrar_programa = true;
           break;
 
+        // Trata de qualquer outro caso que não foi trabalhado
         default:
           console.log("Opção inválida. Tente novamente\n");
           break;
@@ -213,6 +235,7 @@ function menu_usuario(){
 // Função menu agente
 function menu_agente(){
 
+    // Controla o logout do condutor
     let deslogar = false;
 
     do{
@@ -235,145 +258,203 @@ function menu_agente(){
           "----------------------------------------------------------------------------------------\n",
         );
 
+        // Pega o input do usuário
         const opcao = readlineSync.questionInt();
 
+        // Verifica a opção escolhida
         switch (opcao) {
-            case 1:
-                console.log("----------  Opção escolhida: Ver Meus Dados  ----------\n");
-                const dados_agente = sistema.ver_dados_agente();
-                console.log("Extraindo informações...");
-                console.log("ID do Agente: " + dados_agente[0] + "\n");
-                console.log("Nome do Agente: " + dados_agente[1] + "\n");
-                console.log("CPF do Agente: " + formata_cpf(dados_agente[2]) + "\n");
-                console.log("Email do Agente: " + dados_agente[3] + "\n");
-                console.log("Número de Matrícula do Agente: " + dados_agente[4] + "\n");
-                break;
+          // Ver meus dados
+          case 1:
+            console.log(
+              "----------  Opção escolhida: Ver Meus Dados  ----------\n",
+            );
+            // Pega os dados do agente
+            const dados_agente = sistema.ver_dados_agente();
+            console.log("Extraindo informações...");
+            console.log("ID do Agente: " + dados_agente[0] + "\n");
+            console.log("Nome do Agente: " + dados_agente[1] + "\n");
+            console.log(
+              "CPF do Agente: " + formata_cpf(dados_agente[2]) + "\n",
+            );
+            console.log("Email do Agente: " + dados_agente[3] + "\n");
+            console.log(
+              "Número de Matrícula do Agente: " + dados_agente[4] + "\n",
+            );
+            break;
 
-            case 2:
-                console.log("----------  Opção escolhida: Ver Lista de Veículos  ----------\n");
-                const lista_carros = sistema.ver_lista_veiculos();
-                try{
-                    if(lista_carros.length === 0){
-                        throw new Error("Não há veículos cadastrados.\n");
-                    }
-                    console.log("Extraindo informações...");
-                    for (const carro of lista_carros) {
-                        console.log("-------------------------------------------\n");
-                        console.log("Placa: " + carro[0] + "\n");
-                        console.log("Modelo: " + carro[1] + "\n");
-                        console.log("Marca: " + carro[2] + "\n");
-                        console.log("Cor: " + carro[3] + "\n");
-                        console.log("ID do dono do veículo: " + carro[4] + "\n");
-                        console.log("-------------------------------------------\n");
-                    }
-                }
-                catch(error){
-                    console.log(error.message);
-                }
-                break;
+          // Ver lista de veículos
+          case 2:
+            console.log(
+              "----------  Opção escolhida: Ver Lista de Veículos  ----------\n",
+            );
+            // Pega a lista de veículos
+            const lista_carros = sistema.ver_lista_veiculos();
+            // Verifica se a lista está vazia e lança erro em caso positivo
+            try {
+              if (lista_carros.length === 0) {
+                throw new Error("Não há veículos cadastrados.\n");
+              }
+              console.log("Extraindo informações...");
+              // Imprime as informações
+              for (const carro of lista_carros) {
+                console.log("-------------------------------------------\n");
+                console.log("Placa: " + carro[0] + "\n");
+                console.log("Modelo: " + carro[1] + "\n");
+                console.log("Marca: " + carro[2] + "\n");
+                console.log("Cor: " + carro[3] + "\n");
+                console.log("ID do dono do veículo: " + carro[4] + "\n");
+                console.log("-------------------------------------------\n");
+              }
+            } catch (error) {
+              // Trata o erro
+              console.log(error.message);
+            }
+            break;
 
-            case 3:
-                console.log("----------  Opção escolhida: Ver Lista de Condutores  ----------\n");
-                const lista_condutores = sistema.ver_lista_condutores();
-                try{
-                    if(lista_condutores.length === 0){
-                        throw new Error("Não há condutores cadastrados.\n");
-                    }
-                    console.log("Extraindo informações...");
-                    for (const condutor of lista_condutores) {
-                        console.log("-------------------------------------------\n");
-                        console.log("ID do condutor: " + condutor[0] + "\n");
-                        console.log("Nome do condutor: " + condutor[1] + "\n");
-                        console.log("CPF do condutor: " + formata_cpf(condutor[2]) + "\n");
-                        console.log("Data de nascimento do condutor: " + formata_data(condutor[3]) + "\n");
-                        console.log("-------------------------------------------\n");
-                    }
-                }
-                catch(error){
-                    console.log(error.message);
-                }
-                break;
+          // Ver lista de condutores cadastrados
+          case 3:
+            console.log(
+              "----------  Opção escolhida: Ver Lista de Condutores  ----------\n",
+            );
+            // Pega a lista de condutores
+            const lista_condutores = sistema.ver_lista_condutores();
+            // Verifica se a lista está vazia e lança erro em caso positivo
+            try {
+              if (lista_condutores.length === 0) {
+                throw new Error("Não há condutores cadastrados.\n");
+              }
+              console.log("Extraindo informações...");
+              // Imprime as informações
+              for (const condutor of lista_condutores) {
+                console.log("-------------------------------------------\n");
+                console.log("ID do condutor: " + condutor[0] + "\n");
+                console.log("Nome do condutor: " + condutor[1] + "\n");
+                console.log(
+                  "CPF do condutor: " + formata_cpf(condutor[2]) + "\n",
+                );
+                console.log(
+                  "Data de nascimento do condutor: " +
+                    formata_data(condutor[3]) +
+                    "\n",
+                );
+                console.log("-------------------------------------------\n");
+              }
+            } catch (error) {
+              // Trata dos erros
+              console.log(error.message);
+            }
+            break;
 
-            case 4:
-                console.log("----------  Opção escolhida: Aplicar Multa  ----------\n");
-                const id_cliente = solicitar_id_cliente();
-                const tipo_infracao = solicitar_tipo_infracao();
-                const valor = solicitar_valor();
-                const data = solicitar_data();
-                sistema.aplicar_multa(id_cliente, tipo_infracao, valor, data);
-                console.log("Multa aplicada com sucesso!\n");
-                break;
-            
-            case 5:
-                console.log("----------  Opção escolhida: Ver Lista de Multas  ----------\n");
-                const lista_multas = sistema.ver_multas();
-                try{
-                    if(lista_multas.length === 0){
-                        throw new Error("Não há multas cadastradas.\n");
-                    }
-                    console.log("Extraindo informações...");
-                    for (const multa of lista_multas) {
-                        console.log("-------------------------------------------\n");
-                        console.log("ID da multa: " + multa[0] + "\n");
-                        console.log("ID do condutor: " + multa[1] + "\n");
-                        console.log("Tipo de infração: " + multa[2] + "\n");
-                        console.log("Valor da multa: " + formata_valor(multa[3]) + "\n",);
-                        console.log("Data de ocorrência: " + formata_data(multa[4]) + "\n");
-                        console.log("Status da multa: " + multa[5] + "\n");
-                        console.log("-------------------------------------------\n");
-                    }
-                }
-                catch(error){
-                    console.log(error.message);
-                }
-                break;
+          // Aplicar multa
+          case 4:
+            console.log(
+              "----------  Opção escolhida: Aplicar Multa  ----------\n",
+            );
+            // Solicitações de informação
+            const id_cliente = solicitar_id_cliente();
+            const tipo_infracao = solicitar_tipo_infracao();
+            const valor = solicitar_valor();
+            const data = solicitar_data();
+            // Aplica a multa
+            sistema.aplicar_multa(id_cliente, tipo_infracao, valor, data);
+            console.log("Multa aplicada com sucesso!\n");
+            break;
 
-            case 6:
-                console.log("----------  Opção escolhida: Alterar Status da Multa  ----------\n");
-                const id_multa = solicitar_id_multa();
-                const novo_status = solicitar_status_multa();
-                
-                try{
-                    if(sistema.alterar_status_multa(id_multa, novo_status)){
-                        console.log("Status da multa alterado com sucesso!\n");
-                    }
-                    else{
-                        throw new Error("Erro ao alterar status da multa.\n");
-                    }
-                }
-                catch(error){
-                    console.log(error.message);
-                }
-                break;
+          // Ver lista de multas
+          case 5:
+            console.log(
+              "----------  Opção escolhida: Ver Lista de Multas  ----------\n",
+            );
+            // Pega a lista de multas
+            const lista_multas = sistema.ver_multas();
+            // Verifica se a lista está vazia e lança erro em caso positivo
+            try {
+              if (lista_multas.length === 0) {
+                throw new Error("Não há multas cadastradas.\n");
+              }
+              console.log("Extraindo informações...");
+              // Imprime as informações
+              for (const multa of lista_multas) {
+                console.log("-------------------------------------------\n");
+                console.log("ID da multa: " + multa[0] + "\n");
+                console.log("ID do condutor: " + multa[1] + "\n");
+                console.log("Tipo de infração: " + multa[2] + "\n");
+                console.log(
+                  "Valor da multa: " + formata_valor(multa[3]) + "\n",
+                );
+                console.log(
+                  "Data de ocorrência: " + formata_data(multa[4]) + "\n",
+                );
+                console.log("Status da multa: " + multa[5] + "\n");
+                console.log("-------------------------------------------\n");
+              }
+            } 
+            // Trata dos erros
+            catch (error) {
+              console.log(error.message);
+            }
+            break;
 
-            case 7:
-                console.log("----------  Opção escolhida: Buscar Carro Por Placa  ----------\n");
-                const placa_a = solicitar_placa();
-                const carro = sistema.buscar_por_placa(placa_a);
-                if(carro === false){
-                    console.log("Carro não encontrado.\n");
-                }
-                else{
-                    console.log("Extraindo informações...");
-                    console.log("Placa: " + carro[0] + "\n");
-                    console.log("Modelo: " + carro[1] + "\n");
-                    console.log("Marca: " + carro[2] + "\n");
-                    console.log("Cor: " + carro[3] + "\n"); 
-                    console.log("ID do dono do veículo: " + carro[4] + "\n");
-                }
-                break;
+          // Alterar status da multa
+          case 6:
+            console.log(
+              "----------  Opção escolhida: Alterar Status da Multa  ----------\n",
+            );
+            // Solicitações de informação
+            const id_multa = solicitar_id_multa();
+            const novo_status = solicitar_status_multa();
 
-            case 8:
+            // Aplica a alteração e verifica se deu erro
+            try {
+              if (sistema.alterar_status_multa(id_multa, novo_status)) {
+                console.log("Status da multa alterado com sucesso!\n");
+              } else {
+                throw new Error("Erro ao alterar status da multa.\n");
+              }
+            } 
+            // Trata dos erros
+            catch (error) {
+              console.log(error.message);
+            }
+            break;
+
+          // Buscar carro por placa
+          case 7:
+            console.log(
+              "----------  Opção escolhida: Buscar Carro Por Placa  ----------\n",
+            );
+            // Solicita a placa
+            const placa_a = solicitar_placa();
+            // Faz a busca por placa
+            const carro = sistema.buscar_por_placa(placa_a);
+            // Verifica se deu erro
+            if (carro === false) {
+              console.log("Carro não encontrado.\n");
+            } 
+            // Imprime as informações
+            else {
+              console.log("Extraindo informações...");
+              console.log("Placa: " + carro[0] + "\n");
+              console.log("Modelo: " + carro[1] + "\n");
+              console.log("Marca: " + carro[2] + "\n");
+              console.log("Cor: " + carro[3] + "\n");
+              console.log("ID do dono do veículo: " + carro[4] + "\n");
+            }
+            break;
+
+          // Deslogar
+          case 8:
             console.log("----------  Opção escolhida: Deslogar  ----------\n");
             console.log("Deslogando...\n");
+            // Altera as variáveis para deslogar o usuário
             sistema.deslogar();
             deslogar = true;
             break;
 
-
-            default:
-                console.log("Opção inválida. Tente novamente\n");
-                break;
+          // Trata de qualquer outro caso que não foi trabalhado
+          default:
+            console.log("Opção inválida. Tente novamente\n");
+            break;
         }
     }while (!deslogar);
 }
@@ -381,6 +462,7 @@ function menu_agente(){
 // Função menu condutor
 function menu_condutor(){
 
+    // Controla o logout do condutor
     let deslogar = false;
 
     do {
@@ -403,15 +485,20 @@ function menu_condutor(){
         "----------------------------------------------------------------------------------------\n",
       );
 
+      // Pega o input do usuário
       const opcao = readlineSync.questionInt();
 
+      // Verifica a opção escolhida
       switch (opcao) {
+        // Ver meus dados
         case 1:
           console.log(
             "----------  Opção escolhida: Ver Meus Dados  ----------\n",
           );
+          // Pega os dados do condutor
           const dados_condutor = sistema.ver_dados_condutor();
           console.log("Extraindo informações...");
+          // Imprime as informações
           console.log("ID do Condutor: " + dados_condutor[0] + "\n");
           console.log("Nome do Condutor: " + dados_condutor[1] + "\n");
           console.log(
@@ -425,16 +512,20 @@ function menu_condutor(){
           console.log("Email do Condutor: " + dados_condutor[4] + "\n");
           break;
 
+        // Ver lista de multas próprias
         case 2:
           console.log(
             "----------  Opção escolhida: Ver Minhas Multas ----------\n",
           );
+          // Pega a lista de multas
           const lista_minhas_multas = sistema.ver_multas_condutor();
+          // Verifica se a lista está vazia
           try {
             if (lista_minhas_multas.length === 0) {
               throw new Error("Não há multas cadastradas.\n");
             }
             console.log("Extraindo informações...");
+            // Imprime as informações
             for (const multa of lista_minhas_multas) {
               console.log("-------------------------------------------\n");
               console.log("ID da multa: " + multa[0] + "\n");
@@ -444,26 +535,34 @@ function menu_condutor(){
               console.log("Status da multa: " + multa[4] + "\n");
               console.log("-------------------------------------------\n");
             }
-          } catch (error) {
+          } 
+          // Trata dos erros
+          catch (error) {
             console.log(error.message);
           }
           break;
 
+        // Cadastrar veículo
         case 3:
           console.log(
             "----------  Opção escolhida: Cadastrar Veículo ----------\n",
           );
+          // Solicitações de informação
           const placa = solicitar_placa();
           const modelo = readlineSync.question("Qual é o modelo do veículo? ");
           const marca = readlineSync.question("Qual é a marca do veículo? ");
           const cor = readlineSync.question("Qual é a cor do veículo? ");
+          // Cadastra o veículo
           sistema.cadastrar_veiculo(placa, modelo, marca, cor);
           console.log("Carro cadastrado com sucesso!\n");
           break;
 
+        // Pagar multa
         case 4:
           console.log("----------  Opção escolhida: Pagar Multa  ----------\n");
+          // Solicita o id da multa a ser paga
           const id_multa_pagar = solicitar_id_multa();
+          // Faz o pagamente e verifica se deu erro
           if (sistema.pagar_multa(id_multa_pagar)) {
             console.log("Multa paga com sucesso!\n");
           } else {
@@ -471,11 +570,14 @@ function menu_condutor(){
           }
           break;
 
+        // Recorrer multa
         case 5:
           console.log(
             "----------  Opção escolhida: Recorrer Multa ----------\n",
           );
+          // Solicita o id da multa a ser recorrida
           const id_multa_recorrer = solicitar_id_multa();
+          // Recorre e verifica se deu erro
           if (sistema.recorrer_multa(id_multa_recorrer)) {
             console.log("Multa recorrida com sucesso!\n");
           } else {
@@ -483,15 +585,21 @@ function menu_condutor(){
           }
           break;
 
+        // Buscar carro por placa
         case 6:
           console.log(
             "----------  Opção escolhida: Buscar Carro Por Placa  ----------\n",
           );
+          // Solicita a placa
           const placa_c = solicitar_placa();
+          // Faz a busca por placa
           const carro = sistema.buscar_por_placa(placa_c);
+          // Verifica se deu erro
           if (carro === false) {
             console.log("Carro não encontrado.\n");
-          } else {
+          } 
+          // Imprime as informações
+          else {
             console.log("Extraindo informações...");
             console.log("Placa: " + carro[0] + "\n");
             console.log("Modelo: " + carro[1] + "\n");
@@ -501,11 +609,14 @@ function menu_condutor(){
           }
           break;
 
+        // Excluir veículo
         case 7:
           console.log(
             "----------  Opção escolhida: Excluir Veículo ----------\n",
           );
+          // Solicita a placa
           const placa_e = solicitar_placa();
+          // Exclui o veículo e verifica se deu erro
           if (sistema.excluir_veiculo(placa_e)) {
             console.log("Veículo excluído com sucesso!\n");
           } else {
@@ -513,13 +624,16 @@ function menu_condutor(){
           }
           break;
 
+        // Deslogar
         case 8:
           console.log("----------  Opção escolhida: Deslogar  ----------\n");
           console.log("Deslogando...\n");
+          // Altera as variáveis para deslogar o usuário
           sistema.deslogar();
           deslogar = true;
           break;
 
+        // Trata de qualquer outro caso que não foi trabalhado
         default:
           console.log("Opção inválida. Tente novamente\n");
           break;
@@ -527,10 +641,12 @@ function menu_condutor(){
     } while (!deslogar);
 }
 
+// Função para criar informações para testes
 function cria_para_teste(){
     sistema.cadastro_agente("Gabriel Santos", "11111111111", "gabrielsantos@example.com", "Testesenha!1", "123456");
     sistema.cadastro_condutor("Julia Carvalho", "22222222222", "01012001", "juliacarvalho@example.com", "Testesenha!2");
     sistema.cadastrar_veiculo("yyy1020", "corolla", "toyota", "preto");
+    sistema.cadastrar_multa("123456", "Ultrapassar sinal", "120", "09012026");
     sistema.deslogar();
     // Não da para aplicar a multa por conta das proteções do sistema contra multa fantasmas.
 }

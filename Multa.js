@@ -9,7 +9,7 @@ export class Multa {
     #tipo_infracao;
     #valor;
     #data;
-    #status = "Pendente"; // 0 = pendente; 1 = paga; 2 = cancelada; 3 = recorrida
+    #status = "Pendente"; // Pendente; Paga; Cancelada; Recorrida
 
     // Construtor da classe multa. 
     constructor(id_cliente, tipo_infracao, valor, data) {
@@ -47,7 +47,7 @@ export class Multa {
         return this.#status;
     }   
 
-    // set para mudar o status da multa.
+    // Função para mudar o status da multa.
     atualiza_status(novo_status) {
         this.#status = novo_status;
     }
