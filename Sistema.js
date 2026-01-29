@@ -105,9 +105,9 @@ export class Sistema {
     }
   }
 
-  cadastro_agente(nome, cpf, email, senha) {
+  cadastro_agente(nome, cpf, email, senha, matricula) {
     if (!this.#verifica_email_geral(email)) {
-      const novo_agente = new Agente(nome, cpf, email, senha);
+      const novo_agente = new Agente(nome, cpf, email, senha, matricula);
       this.#agentes.set(email, novo_agente);
       this.#usuario_logado = 1;
       this.#email_atual = email;

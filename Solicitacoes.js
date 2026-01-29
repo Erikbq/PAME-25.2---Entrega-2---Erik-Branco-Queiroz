@@ -39,7 +39,7 @@ export function solicitar_email() {
 }
 
 // Função para verificar senha
-function verificar_senha(senha) { 
+function verificar_senha(senha) {
   // Critérios
   const tem_minuscula = /[a-z]/.test(senha);
   const tem_maiuscula = /[A-Z]/.test(senha);
@@ -67,7 +67,7 @@ export function solicitar_senha() {
     // Pede a senha, mas não a mostra enquanto digita
     const senha = readlineSync.question("Digite a sua senha: ", {
       hideEchoBack: false,
-      mask: "*"
+      mask: "*",
     });
 
     if (verificar_senha(senha)) {
@@ -225,42 +225,41 @@ export function solicitar_tipo_infracao() {
 export function solicitar_valor() {
   let valor_final;
 
-    while (true) {
-        const valor = readlineSync.question("Qual e o valor da multa? ");
+  while (true) {
+    const valor = readlineSync.question("Qual e o valor da multa? ");
 
-        try {
-            if (!valor) {
-                throw new Error("Digite algo no campo.");
-            }
+    try {
+      if (!valor) {
+        throw new Error("Digite algo no campo.");
+      }
 
-            let valor_formatado = valor.replace(",", ".");
+      let valor_formatado = valor.replace(",", ".");
 
-            if (/[^0-9.]/.test(valor_formatado)) {
-                throw new Error("Digite apenas números e/ou separador decimal.");
-            }
+      if (/[^0-9.]/.test(valor_formatado)) {
+        throw new Error("Digite apenas números e/ou separador decimal.");
+      }
 
-            const numero = parseFloat(valor_formatado);
+      const numero = parseFloat(valor_formatado);
 
-            if (isNaN(numero) || numero <= 0) {
-                throw new Error("Valor inválido.");
-            }
+      if (isNaN(numero) || numero <= 0) {
+        throw new Error("Valor inválido.");
+      }
 
-            valor_final = numero.toFixed(2);
-            break;
-        } 
-        catch (error) {
-            console.log(error.message);
-            continue;
-        }
+      valor_final = numero.toFixed(2);
+      break;
+    } catch (error) {
+      console.log(error.message);
+      continue;
     }
-    return valor_final;
+  }
+  return valor_final;
 }
 
-export function formata_valor(valor){
-    return (valor + " R$");
+export function formata_valor(valor) {
+  return valor + " R$";
 }
 
-export function solicitar_id_multa(){
+export function solicitar_id_multa() {
   let id_multa_correto;
   while (true) {
     const id_multa = readlineSync.question("Qual é o ID da multa? ");
@@ -316,7 +315,7 @@ export function solicitar_status_multa() {
   return status_multa;
 }
 
-export function solicitar_placa(){
+export function solicitar_placa() {
   let placa_correta;
   while (true) {
     const placa = readlineSync.question("Qual é a placa do veículo? ");
@@ -336,4 +335,27 @@ export function solicitar_placa(){
     }
   }
   return placa_correta;
+}
+
+export function solicitar_matricula() {
+  let matricula_correta;
+  while (true) {
+    const matricula = readlineSync.question("Qual é o seu número de matrícula? ");
+
+    try {
+      if (!matricula) {
+        throw new Error("Digite algo no campo\n");
+      }
+      const matricula = matricula.replace(/\D/g, "");
+      if (!matricula) {
+        throw new Error("Número de matrícula inválido. Digite apenas números.");
+      }
+      matricula_correta = matricula;
+      break;
+    } catch (error) {
+      console.log(error.message);
+      continue;
+    }
+  }
+  return matricula_correta;
 }

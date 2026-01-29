@@ -18,6 +18,7 @@ import { formata_valor } from "./Solicitacoes.js";
 import { solicitar_id_multa } from "./Solicitacoes.js";
 import { solicitar_status_multa } from "./Solicitacoes.js";
 import { solicitar_placa } from "./Solicitacoes.js";
+import { solicitar_matricula } from "./Solicitacoes.js";
 
 
 
@@ -162,11 +163,14 @@ function menu_usuario(){
               // Solicitação e verificação da senha
               const senha_agente = solicitar_senha();
 
+              const matricula_agente = solicitar_matricula();
+
               const retorno_agente = sistema.cadastro_agente(
                 nome_agente,
                 cpf_agente,
                 email_agente,
                 senha_agente,
+                matricula_agente,
               );
 
               if (retorno_agente === true) {

@@ -14,7 +14,7 @@ export class Agente {
   #numero_matricula;
 
   // Construtor da classe Agente.
-  constructor(nome, cpf, email, senha_plana) {
+  constructor(nome, cpf, email, senha_plana, matricula) {
     this.#nome = nome;
     this.#cpf = cpf;
     this.#email = email;
@@ -28,9 +28,7 @@ export class Agente {
     this.#senha_hash = this.#gerarHashSenha(senha_plana);
 
     // Gera um número de matrícula único com 6 números.
-    this.#numero_matricula = Math.floor(Math.random() * 1000000)
-      .toString()
-      .padStart(6, "0");
+    this.#numero_matricula = matricula;
   }
 
   // Método privado para gerar o hash da senha utilizando o padrão SHA-256.
